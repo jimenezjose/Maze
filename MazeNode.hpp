@@ -20,6 +20,7 @@ using namespace std;
 
 class MazeNode {
 public:
+  const int MAX_CHILDREN = 4;
   /* cell location in Maze */
   const int row, y;
   const int column, x;
