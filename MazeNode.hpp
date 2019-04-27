@@ -32,7 +32,7 @@ public:
   MazeNode * down  = nullptr;
   MazeNode * left  = nullptr;
   MazeNode * right = nullptr;
-  /* graph traversal/search metadata */
+  /* graph traversal/search data */
   bool visited = false;
   MazeNode * prev = nullptr;
   int distance = 0;
@@ -49,7 +49,7 @@ public:
     diagonal_x( column ), diagonal_y( row ) {}
 
   /*****************************************************************************
-  % Routine Name: 
+  % Routine Name: TODO
   % File:         
   % Parameters:    
   % Description:   
@@ -74,7 +74,7 @@ public:
   }
 
   /*****************************************************************************
-  % Routine Name: 
+  % Routine Name: TODO
   % File:         
   % Parameters:    
   % Description:   
@@ -100,7 +100,7 @@ public:
 
   
   /*****************************************************************************
-  % Routine Name: 
+  % Routine Name:  TODO
   % File:         
   % Parameters:    
   % Description:   
@@ -112,7 +112,7 @@ public:
   }
 
   /*****************************************************************************
-  % Routine Name: 
+  % Routine Name: TODO
   % File:         
   % Parameters:    
   % Description:   
@@ -193,7 +193,7 @@ public:
    * @return iteratable list of neighbors.
    */
   /*****************************************************************************
-  % Routine Name: 
+  % Routine Name: TODO
   % File:         
   % Parameters:    
   % Description:   
@@ -216,7 +216,7 @@ public:
    * @return double value of the attribute diagonal_x.
    */
   /*****************************************************************************
-  % Routine Name: 
+  % Routine Name: TODO
   % File:         
   % Parameters:    
   % Description:   
@@ -232,7 +232,7 @@ public:
    * @return double value of the attribute diagonal_x.
    */
   /*****************************************************************************
-  % Routine Name: 
+  % Routine Name: TODO
   % File:         
   % Parameters:    
   % Description:   
