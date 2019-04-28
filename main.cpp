@@ -1,7 +1,9 @@
 #include "Maze.h"
+#include <iostream>
+
+using namespace std;
 
 int main() {
-  //Maze maze(3, 2);
-  MazeNode( 0.5, 0.7 );
+  Maze maze(3, 2);
   return 0;
 }

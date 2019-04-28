@@ -71,6 +71,10 @@ public:
     bool operator==( Iterator const & other ) const;
     bool operator!=( Iterator const & other ) const;
   };
+
+  Maze::Iterator begin() { return Maze::Iterator(*this, &at(0, 0)); }
+  Maze::Iterator end() { return Maze::Iterator(*this, nullptr); }
+
 };
 
 #endif

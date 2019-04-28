@@ -44,9 +44,8 @@ public:
   %               column - column that the node belongs to in maze. 
   % Description:  TODO
   **************************************************************************/
-  MazeNode( double row, double column ) : 
-    row( (int)row ), y( (int)row ), column( (int)column ), x( (int)column ), 
-    diagonal_x( column ), diagonal_y( row ) {}
+  MazeNode( double row, double column ) : row( (int)row ), column( (int)column ), 
+    diagonal_x( column ), diagonal_y( row ), y( (int)row ), x( (int)column ) {}
 
   /*****************************************************************************
   % Routine Name: TODO
@@ -99,29 +98,6 @@ public:
   }
 
   
-  /*****************************************************************************
-  % Routine Name:  TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
-  *****************************************************************************/
-  friend ostream & operator<<( ostream & os, MazeNode & node ) {
-    os << "(" << node.row << ", " << node.column << ")";
-    return os;
-  }
-
-  /*****************************************************************************
-  % Routine Name: TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
-  *****************************************************************************/
-  bool operator==( const MazeNode & node ) {
-    return ( x == node.x && y == node.y );
-  }
-
   /*****************************************************************************
   % Routine Name:  setVisited
   % File:          MazeNode.hpp
@@ -240,6 +216,29 @@ public:
   *****************************************************************************/
   double getDiagonalY() {
     return diagonal_y;
+  }
+
+  /*****************************************************************************
+  % Routine Name:  TODO
+  % File:         
+  % Parameters:    
+  % Description:   
+  % Return:        
+  *****************************************************************************/
+  friend ostream & operator<<( ostream & os, MazeNode & node ) {
+    os << "(" << node.row << ", " << node.column << ")";
+    return os;
+  }
+
+  /*****************************************************************************
+  % Routine Name: TODO
+  % File:         
+  % Parameters:    
+  % Description:   
+  % Return:        
+  *****************************************************************************/
+  bool operator==( const MazeNode & node ) {
+    return ( x == node.x && y == node.y );
   }
 
 };

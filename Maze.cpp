@@ -120,7 +120,7 @@ void Maze::clear() {
 % Return:       MazeNode object at (x, y) position in two-dimensional maze. 
 *****************************************************************************/
 MazeNode & Maze::at( int row, int column ) {
-  return maze[0][0];
+  return maze[ row ][ column ];
 }
 
 /*****************************************************************************
@@ -154,7 +154,7 @@ vector<MazeNode> Maze::getAdjacentCellsList( MazeNode & node ) {
 % Return:       The width of the maze in unit of cells.
 *****************************************************************************/
 int Maze::getWidth() {
-  return 0;
+  return width;
 }
 
 /*****************************************************************************
@@ -165,47 +165,88 @@ int Maze::getWidth() {
 % Return:       The height of the maze in units of cells.
 *****************************************************************************/
 int Maze::getHeight() {
-  return 0;
+  return height;
 }
 
 
 /************************* Maze Iterator Definitions ************************/
-//Maze::Iterator( Maze & maze, MazeNode * curr ) : maze(maze), curr(curr) {}
 
+
+/*****************************************************************************
+% Routine Name: Maze::Iterator::operator * 
+% File:         Maze.h
+% Parameters:   None.
+% Description:  Overloads the * operator to direference the maze node pointer.
+% Return:       The maze node that curr points to. 
+*****************************************************************************/
 MazeNode Maze::Iterator::operator*() const {
   return *curr;
 }
 
-/**/
+/*****************************************************************************
+% Routine Name: Maze::Iterator::operator ++ 
+% File:         Maze.h
+% Parameters:   None.
+% Description:  Overloads the prefix operator++ and moves curr to the 
+%               successor node of the maze container.
+% Return:       The calling maze iteartor.
+*****************************************************************************/
 Maze::Iterator Maze::Iterator::operator++() {
+  MazeNode * end = &maze.at( maze.getHeight() - 1, maze.getWidth() - 1 );
+
+  if( curr == end ) {
+    /* terminating case */
+    curr = nullptr;
+    return *this;
+  }
+
   if( curr->column + 1 == maze.getWidth() ) {
     /* wrapping around 2d array */
     curr = &maze.at( curr->row + 1, 0 );
   }
-  else if( curr->row + 1 < maze.getHeight() ) {
-    /* typical 1d array iteration */
-    curr = &maze.at( curr->row + 1, curr->column );
-  }
   else {
-    /* curr is the end */
-    curr = nullptr;
+    /* typical 1d array iteration */
+    curr = &maze.at( curr->row, curr->column + 1);
   }
   return *this;
 }
 
-/**/
+/*****************************************************************************
+% Routine Name: Maze::Iterator::operator ++ 
+% File:         Maze.h
+% Parameters:   None.
+% Description:  Overloads the postfix operator++ and moves curr to the 
+%               successor of the maze container.
+% Return:       The calling maze iterator before moving curr to its sucessor. 
+*****************************************************************************/
 Maze::Iterator Maze::Iterator::operator++(int) {
   Maze::Iterator before( maze, curr );
   ++(*this);
   return before;
 }
 
-/**/
+/*****************************************************************************
+% Routine Name: Maze::Iterator::operator ==
+% File:         Maze.h
+% Parameters:   other - an iterator to compare with.
+% Description:  Overloads the == operator to check equality of two maze 
+%               iterators based on a shallow comparsion of curr pointers.
+% Return:       True if both curr and the other iterators curr point to the 
+%               same address in memory, false otherwise. 
+*****************************************************************************/
 bool Maze::Iterator::operator==( Maze::Iterator const & other ) const {
   return curr == other.curr;
 }
 
-/**/
+/*****************************************************************************
+% Routine Name: Maze::Iterator::operator !=
+% File:         Maze.h
+% Parameters:   other - an iterator to compare with.
+% Description:  Overloads the != opearator to evaluate when two maze iterators
+%               are not equivalent based on curr pointer comparison. 
+% Return:       True if the other iterator's curr is not same as this objects
+%               curr, false otherwise. 
+*****************************************************************************/
 bool Maze::Iterator::operator!=( Maze::Iterator const & other ) const {
   return curr != other.curr;
 }
