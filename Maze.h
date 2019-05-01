@@ -50,7 +50,7 @@ public:
   /* Checks if there exists a wall between the given points or nodes. */
   bool wallBetween( MazeNode & node_A, MazeNode & node_B );
   /* Checks if the (row, column) coordinate is not in the maze. */
-  bool outOfBounds( int row, int column);
+  bool outOfBounds( int row, int column );
   /* Gets all global adjacent neighbors of node in maze. */
   vector<MazeNode> getAdjacentCellsList( MazeNode & node );
   /* Getter method for the width, in unit cells, of the maze. */
@@ -72,8 +72,8 @@ public:
     bool operator!=( Iterator const & other ) const;
   };
 
-  Maze::Iterator begin() { return Maze::Iterator(*this, &at(0, 0)); }
-  Maze::Iterator end() { return Maze::Iterator(*this, nullptr); }
+  Maze::Iterator begin() { return Maze::Iterator( *this, &at(0, 0) ); }
+  Maze::Iterator end() { return Maze::Iterator( *this, nullptr ); }
 
 };
 
