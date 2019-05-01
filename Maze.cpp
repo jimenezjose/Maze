@@ -13,7 +13,7 @@ using namespace std;
 
 /*****************************************************************************
 % Constructor: Maze
-% File:        Maze.h
+% File:        Maze.cpp
 % Parameters:  width  - width of rectangular maze.
 %              height - height of rectangular maze.
 % Description: Creates a two dimensional maze data structure.
@@ -30,7 +30,7 @@ Maze::Maze( int width, int height ) : width( width ), height( height ) {
 
 /*****************************************************************************
 % Routine Name: addEdge
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   node_A - a cell in this maze.
 %               node_B - a cell in this maze.
 % Description:  Creates an undirected egde between the given nodes.
@@ -42,7 +42,7 @@ void Maze::addEdge( MazeNode & node_A, MazeNode & node_B ) {
 
 /*****************************************************************************
 % Routine Name: removeEdge
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   node_A - a cell in this maze.
 %               node_B - a cell in this maze.
 % Description:  Removes an undirected egde that is between the given nodes.
@@ -54,7 +54,7 @@ void Maze::removeEdge( MazeNode & node_A, MazeNode & node_B ) {
 
 /*****************************************************************************
 % Routine Name: clearWalls
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   None. 
 % Description:  Clears the maze such that no walls will exist - this will 
 %               create a fully connected maze (definition of wall).
@@ -66,7 +66,7 @@ void Maze::clearWalls() {
 
 /*****************************************************************************
 % Routine Name: addWall
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   node_A - a cell in this maze.
 %               node_B - a cell in this maze.
 % Description:  Creates a wall between two neighbor nodes in maze.
@@ -78,7 +78,7 @@ void Maze::addWall( MazeNode & node_A, MazeNode & node_B ) {
 
 /*****************************************************************************
 % Routine Name: removeWall 
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   node_A - a cell in this maze.
 %               node_B - a cell in this maze.
 % Description:  Removes the wall betweeb two neighbor nodes in maze. 
@@ -90,7 +90,7 @@ void Maze::removeWall( MazeNode & node_A, MazeNode & node_B ) {
 
 /*****************************************************************************
 % Routine Name: optimize
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   path - linked list path of maze nodes to be optimized.
 % Description:  Path optimization with regards to the micromouse's ability to 
 %               move in diagonal directions.
@@ -102,7 +102,7 @@ vector<MazeNode> Maze::optimize( vector<MazeNode> path ) {
 
 /*****************************************************************************
 % Routine Name: clear
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   None.
 % Description:  Clears all internal data of node relationships in maze.
 % Return:       Nothing. 
@@ -113,7 +113,7 @@ void Maze::clear() {
 
 /*****************************************************************************
 % Routine Name: at
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   row    - row of node in maze
 %               column - column of node in maze
 % Description:  Accessor method for maze internal nodal data structures.
@@ -125,7 +125,7 @@ MazeNode & Maze::at( int row, int column ) {
 
 /*****************************************************************************
 % Routine Name: outOfBounds
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   row    - vertical deviated position of interest.
 %               column - horizontal deviated position of interest.
 % Description:  Checks if the (row, column) coordinate is not in the maze. 
@@ -137,7 +137,7 @@ bool Maze::outOfBounds( int row, int column) {
 
 /*****************************************************************************
 % Routine Name: getAdjacentCellsList
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   node - the node of interest in the maze.
 % Description:  Gets all global adjacent neighbors of node in maze.
 % Return:       A list of all existing adjacent neighbors of node in maze.
@@ -148,7 +148,7 @@ vector<MazeNode> Maze::getAdjacentCellsList( MazeNode & node ) {
 
 /*****************************************************************************
 % Routine Name: getWidth
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   None.
 % Description:  Getter method for the width, in unit cells, of the maze.
 % Return:       The width of the maze in unit of cells.
@@ -159,7 +159,7 @@ int Maze::getWidth() {
 
 /*****************************************************************************
 % Routine Name: getHeight
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   None.
 % Description:  Getter method for the height, in unit cells, of the maze.
 % Return:       The height of the maze in units of cells.
@@ -174,7 +174,7 @@ int Maze::getHeight() {
 
 /*****************************************************************************
 % Routine Name: Maze::Iterator::operator * 
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   None.
 % Description:  Overloads the * operator to direference the maze node pointer.
 % Return:       The maze node that curr points to. 
@@ -185,7 +185,7 @@ MazeNode Maze::Iterator::operator*() const {
 
 /*****************************************************************************
 % Routine Name: Maze::Iterator::operator ++ 
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   None.
 % Description:  Overloads the prefix operator++ and moves curr to the 
 %               successor node of the maze container.
@@ -213,7 +213,7 @@ Maze::Iterator Maze::Iterator::operator++() {
 
 /*****************************************************************************
 % Routine Name: Maze::Iterator::operator ++ 
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   None.
 % Description:  Overloads the postfix operator++ and moves curr to the 
 %               successor of the maze container.
@@ -227,7 +227,7 @@ Maze::Iterator Maze::Iterator::operator++(int) {
 
 /*****************************************************************************
 % Routine Name: Maze::Iterator::operator ==
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   other - an iterator to compare with.
 % Description:  Overloads the == operator to check equality of two maze 
 %               iterators based on a shallow comparsion of curr pointers.
@@ -240,7 +240,7 @@ bool Maze::Iterator::operator==( Maze::Iterator const & other ) const {
 
 /*****************************************************************************
 % Routine Name: Maze::Iterator::operator !=
-% File:         Maze.h
+% File:         Maze.cpp
 % Parameters:   other - an iterator to compare with.
 % Description:  Overloads the != opearator to evaluate when two maze iterators
 %               are not equivalent based on curr pointer comparison. 

@@ -202,17 +202,13 @@ public:
     return diagonal_x;
   }
 
-  /**
-   * Getter for attribute diagonal_y which is for path
-   * optimization and allows "half steps" in the y-axis.
-   * @return double value of the attribute diagonal_x.
-   */
   /*****************************************************************************
-  % Routine Name: TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
+  % Routine Name: getDiagonalY
+  % File:         MazeNode.hpp
+  % Parameters:   None.
+  % Description:  Getter for attribute diagona_y, which is used for diagonal 
+  %               directions while traversing the  maze.
+  % Return:       A floating point y-coordinate.
   *****************************************************************************/
   double getDiagonalY() {
     return diagonal_y;
