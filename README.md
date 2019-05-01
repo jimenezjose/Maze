@@ -1,2 +1,2 @@
 # Maze
-Micromouse Maze Data Structure - Embedded Systems
+Micromouse Maze Data Structure
