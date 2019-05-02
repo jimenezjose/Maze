@@ -15,6 +15,7 @@ Description:     Cell data structure of the maze.
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -23,8 +24,13 @@ using namespace std;
 % reachabble neighbors.
 ****************************************************************************/
 class MazeNode {
+private: 
+  inline static const string ADD_EDGE_ERROR = 
+    "Error: attempt to add edge to a pair on non-adjacent nodes. ";
+  inline static const string REMOVE_EDGE_ERROR = 
+    "Error: attempt to remove edge to a non-adjacent node. ";
 public:
-  const int MAX_CHILDREN = 4;
+  static const int MAX_CHILDREN = 4;
   /* cell location in Maze */
   const int row, y;
   const int column, x;
@@ -51,6 +57,17 @@ public:
   MazeNode( double row, double column ) : row( (int)row ), column( (int)column ), 
     diagonal_x( column ), diagonal_y( row ), y( (int)row ), x( (int)column ) {}
 
+  /**************************************************************************
+  % Constructor:  MazeNode 
+  % File:         MazeNode.hpp
+  % Parameters:   row    - row that the node belongs to in maze.
+  %               column - column that the node belongs to in maze. 
+  % Description:  Creates a node object for an associated cell in a 2D maze. 
+  **************************************************************************/
+  MazeNode( const MazeNode & node ) : row( node.row ), column( node.column ), 
+    diagonal_x( node.diagonal_x ), diagonal_y( node.diagonal_y ), 
+    y( node.row ), x( node.column ) {}
+
   /*****************************************************************************
   % Routine Name: addNeighbor
   % File:         MazeNode.hpp
@@ -72,7 +89,7 @@ public:
     }
     else {
       /* node is not adjacent */
-      cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
+      //cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
     }
   }
 
@@ -97,7 +114,7 @@ public:
     }
     else {
       /* node is not adjacent */
-      cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
+      //cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
     }
   }
 
@@ -210,6 +227,28 @@ public:
   }
 
   /*****************************************************************************
+  % Routine Name: operator==
+  % File:         MazeNode.hpp
+  % Parameters:   node - node that will be compared with the calling node.
+  % Description:  Evaluates of two nodes are internally equivalent.
+  % Return:       True if and only if node is equivaluent to the calling node.
+  *****************************************************************************/
+  bool operator==( const MazeNode & node ) {
+    return ( x == node.x && y == node.y );
+  }
+
+  /*****************************************************************************
+  % Routine Name: operator== TODO
+  % File:         MazeNode.hpp
+  % Parameters:   node - node that will be compared with the calling node.
+  % Description:  Evaluates of two nodes are internally equivalent.
+  % Return:       True if and only if node is equivaluent to the calling node.
+  *****************************************************************************/
+  MazeNode operator=( const MazeNode & node ) {
+    return MazeNode( node );
+  }
+
+  /*****************************************************************************
   % Routine Name:  operator<<
   % File:          MazeNode.cpp
   % Parameters:    os   - output stream .
@@ -221,18 +260,5 @@ public:
     os << "(" << node.row << ", " << node.column << ")";
     return os;
   }
-
-  /*****************************************************************************
-  % Routine Name: operator==
-  % File:         MazeNode.hpp
-  % Parameters:   node - node that will be compared with the calling node.
-  % Description:  Evaluates of two nodes are internally equivalent.
-  % Return:       True if and only if node is equivaluent to the calling node.
-  *****************************************************************************/
-  bool operator==( const MazeNode & node ) {
-    return ( x == node.x && y == node.y );
-  }
-
 };
-
 #endif

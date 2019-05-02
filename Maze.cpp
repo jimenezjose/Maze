@@ -34,6 +34,17 @@ Maze::Maze( int width, int height ) : width( width ), height( height ) {
 }
 
 /*****************************************************************************
+% Constructor: Maze TODO
+% File:        Maze.cpp
+% Parameters:  width  - width of rectangular maze.
+%              height - height of rectangular maze.
+% Description: Creates a two dimensional maze data structure.
+*****************************************************************************/
+Maze::~Maze() {
+
+}
+
+/*****************************************************************************
 % Routine Name: addEdge
 % File:         Maze.cpp
 % Parameters:   node_A - a cell in this maze.
@@ -102,7 +113,28 @@ void Maze::removeWall( MazeNode & node_A, MazeNode & node_B ) {
 % Return:       Nothing. 
 *****************************************************************************/
 vector<MazeNode> Maze::optimize( vector<MazeNode> path ) {
-  return vector<MazeNode>();
+    /* validity check */
+    if( path.size() == 0 ) return path;
+ 
+    // TODO get a reference to path and for loop thorugh it instead of removing elements
+    vector<MazeNode> bestPath;
+    MazeNode startVertex = path.front();
+    MazeNode endVertex = path.back();
+
+    bestPath.push_back( startVertex );
+
+    while( path.size() > 1 ) {
+      /* smoothen sharp turns by averaging direction */
+      MazeNode currentNode = path.front();
+      path.erase( path.begin() );
+      MazeNode nextNode = path.front();
+      double row_bar = 0.5 * ( currentNode.row + nextNode.row );
+      double column_bar = 0.5 * ( currentNode.column + nextNode.column );
+      bestPath.push_back( MazeNode(row_bar, column_bar) );
+    }
+
+    bestPath.push_back( endVertex );
+    return bestPath;
 }
 
 /*****************************************************************************
