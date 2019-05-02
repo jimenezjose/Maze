@@ -37,6 +37,9 @@ private:
 public:  
   /* Creates a two dimensional maze data structure. */
   Maze( int width, int height );
+  /* Destructs the maze data structure */
+  ~Maze();
+
   /* Creates a wall between two neighbor nodes in maze. */
   void addWall( MazeNode & node_A, MazeNode & node_B );
   /* Removes the wall betweeb two neighbor nodes in maze. */

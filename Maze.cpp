@@ -1,10 +1,15 @@
-/****************************************************************************
-                                                Jose Jorge Jimenez-Olivas
-                                                April 17, 2019
+/*******************************************************************************
+                                                    Jose Jorge Jimenez-Olivas
+                                                    Brandon Cramer
+                                                    Chris Robles
+                                                    Srinivas Venkatraman
+
+                 University of California, San Diego
+                      IEEE Micromouse Team 2019
+
 File Name:       Maze.cpp
 Description:     Graph data structure for a 2D Maze.
-Sources of Help: TODO
-****************************************************************************/
+*******************************************************************************/
 #include <vector>
 #include <utility>
 #include "Maze.h"
@@ -167,10 +172,6 @@ int Maze::getWidth() {
 int Maze::getHeight() {
   return height;
 }
-
-
-/************************* Maze Iterator Definitions ************************/
-
 
 /*****************************************************************************
 % Routine Name: Maze::Iterator::operator * 

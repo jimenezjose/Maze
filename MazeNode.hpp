@@ -10,14 +10,18 @@
 File Name:       MazeNode.hpp
 Description:     Cell data structure of the maze.
 *******************************************************************************/
-#ifndef MAZENODE_H
-#define MAZENODE_H
+#ifndef MAZENODE_HPP
+#define MAZENODE_HPP
 
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
+/****************************************************************************
+% MazeNode contains information about its location in Maze, and its 
+% reachabble neighbors.
+****************************************************************************/
 class MazeNode {
 public:
   const int MAX_CHILDREN = 4;
@@ -42,17 +46,17 @@ public:
   % File:         MazeNode.hpp
   % Parameters:   row    - row that the node belongs to in maze.
   %               column - column that the node belongs to in maze. 
-  % Description:  TODO
+  % Description:  Creates a node object for an associated cell in a 2D maze. 
   **************************************************************************/
   MazeNode( double row, double column ) : row( (int)row ), column( (int)column ), 
     diagonal_x( column ), diagonal_y( row ), y( (int)row ), x( (int)column ) {}
 
   /*****************************************************************************
-  % Routine Name: TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
+  % Routine Name: addNeighbor
+  % File:         MazeNode.hpp
+  % Parameters:   node - an adjacent cell in the maze from the calling node.
+  % Description:  Attaches node as neighbobr of the calling node.
+  % Return:       Nothing.
   *****************************************************************************/
   void addNeighbor( MazeNode * node ) {
     if( node == nullptr ) return;
@@ -68,16 +72,16 @@ public:
     }
     else {
       /* node is not adjacent */
-      //cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
+      cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
     }
   }
 
   /*****************************************************************************
-  % Routine Name: TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
+  % Routine Name: removeNode
+  % File:         MazeNode.hpp
+  % Parameters:   node - an adjacent cell in the maze from the calling node. 
+  % Description:  Removes node from the calling cells neighbor list. 
+  % Return:       Nothing.
   *****************************************************************************/
   void removeNeighbor( MazeNode * node ) {
     if( node == nullptr ) return;
@@ -93,11 +97,10 @@ public:
     }
     else {
       /* node is not adjacent */
-      //cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
+      cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
     }
   }
 
-  
   /*****************************************************************************
   % Routine Name:  setVisited
   % File:          MazeNode.hpp
@@ -164,16 +167,12 @@ public:
     return distance;
   }
 
-  /**
-   * Gets the neighbors of this as a linked list.
-   * @return iteratable list of neighbors.
-   */
   /*****************************************************************************
-  % Routine Name: TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
+  % Routine Name: getNeighborList
+  % File:         MazeNode.hpp
+  % Parameters:   None.
+  % Description:  Gets a list of the neighboring cells of the calling node.
+  % Return:       An iterable list of neighbors.
   *****************************************************************************/
   vector<MazeNode *> getNeighborList() {
     vector<MazeNode *> neighbor_list = vector<MazeNode *>();
@@ -186,17 +185,13 @@ public:
     return neighbor_list;
   }
 
-  /**
-   * Getter for attribute diagonal_x which is for path
-   * optimization and allows "half steps" in the x-axis.
-   * @return double value of the attribute diagonal_x.
-   */
   /*****************************************************************************
-  % Routine Name: TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
+  % Routine Name: getDiagonalX
+  % File:         MazeNode.hpp
+  % Parameters:   None.
+  % Description:  Getter for attribute diagonal_x. diagonal_x is used for path 
+  %               optimization and it allows "half-steps" in the x-axis.
+  % Return:       Double value of the attribute diagonal_x. 
   *****************************************************************************/
   double getDiagonalX() {
     return diagonal_x;
@@ -215,11 +210,12 @@ public:
   }
 
   /*****************************************************************************
-  % Routine Name:  TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
+  % Routine Name:  operator<<
+  % File:          MazeNode.cpp
+  % Parameters:    os   - output stream .
+  %                node - node of interest.  
+  % Description:   Allows for implicit string conversion of node when printing. 
+  % Return:        The passed output stram object.
   *****************************************************************************/
   friend ostream & operator<<( ostream & os, MazeNode & node ) {
     os << "(" << node.row << ", " << node.column << ")";
@@ -227,11 +223,11 @@ public:
   }
 
   /*****************************************************************************
-  % Routine Name: TODO
-  % File:         
-  % Parameters:    
-  % Description:   
-  % Return:        
+  % Routine Name: operator==
+  % File:         MazeNode.hpp
+  % Parameters:   node - node that will be compared with the calling node.
+  % Description:  Evaluates of two nodes are internally equivalent.
+  % Return:       True if and only if node is equivaluent to the calling node.
   *****************************************************************************/
   bool operator==( const MazeNode & node ) {
     return ( x == node.x && y == node.y );
