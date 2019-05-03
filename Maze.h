@@ -39,13 +39,12 @@ public:
   Maze( int width, int height );
   /* Destructs the maze data structure */
   ~Maze();
-
   /* Creates a wall between two neighbor nodes in maze. */
   void addWall( MazeNode & node_A, MazeNode & node_B );
   /* Removes the wall betweeb two neighbor nodes in maze. */
   void removeWall( MazeNode & node_A, MazeNode & node_B );
   /* Converts the 90 degree turns in the path to 45 degree steps. */
-  vector<MazeNode> optimize( vector<MazeNode> path );
+  vector<MazeNode> optimize( vector<MazeNode> & path );
   /* Clears all internal data of node relationships in maze. */
   void clear();
   /* Accessor method for maze internal nodal data structures. */

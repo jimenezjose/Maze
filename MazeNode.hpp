@@ -15,14 +15,13 @@ Description:     Cell data structure of the maze.
 
 #include <iostream>
 #include <vector>
-#include <string>
 
 using namespace std;
 
 // TODO data alignment optimized to reduce node storage from 72 to 56 saved 16 bytes!
 
 /****************************************************************************
-% MazeNode contains information about its location in Maze, and its 
+% MazeNode contains information about its location in its Maze, and its 
 % reachabble neighbors.
 ****************************************************************************/
 class MazeNode {

@@ -1,11 +1,11 @@
 #include "Maze.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 int main() {
-  Maze maze(3, 2);
-  cerr << sizeof(MazeNode) << endl;
-  cerr << sizeof(int) << endl;
+  Maze maze(1, 1);
+  cerr << "size of MazeNode: " << sizeof(MazeNode) << endl;
   return 0;
 }

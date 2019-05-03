@@ -24,7 +24,14 @@ using namespace std;
 % Description: Creates a two dimensional maze data structure.
 *****************************************************************************/
 Maze::Maze( int width, int height ) : width( width ), height( height ) {
+  if( width <= 0 || height <= 0 ) {
+    /* validity check - default to a 1x1 maze. */
+    cerr << "Maze::Maze() Error - aguments must be greater than 0." << endl;
+    width = height = 1;
+  }
+
   maze = vector<vector<MazeNode>>( height, vector<MazeNode>() );
+
   /* creating maze nodes */
   for( int row = 0; row < height; row++ ) {
     for( int column = 0; column < width; column++ ) {
@@ -112,28 +119,23 @@ void Maze::removeWall( MazeNode & node_A, MazeNode & node_B ) {
 %               move in diagonal directions.
 % Return:       Nothing. 
 *****************************************************************************/
-vector<MazeNode> Maze::optimize( vector<MazeNode> path ) {
+vector<MazeNode> Maze::optimize( vector<MazeNode> & path ) {
     /* validity check */
     if( path.size() == 0 ) return path;
  
-    // TODO get a reference to path and for loop thorugh it instead of removing elements
     vector<MazeNode> bestPath;
-    MazeNode startVertex = path.front();
-    MazeNode endVertex = path.back();
+    bestPath.push_back( path.front() );
 
-    bestPath.push_back( startVertex );
-
-    while( path.size() > 1 ) {
+    for( int index = 0; index < path.size() - 1; index++ ) {
       /* smoothen sharp turns by averaging direction */
-      MazeNode currentNode = path.front();
-      path.erase( path.begin() );
-      MazeNode nextNode = path.front();
+      MazeNode currentNode = path[ index ];
+      MazeNode nextNode = path[ index + 1 ];
       double row_bar = 0.5 * ( currentNode.row + nextNode.row );
       double column_bar = 0.5 * ( currentNode.column + nextNode.column );
       bestPath.push_back( MazeNode(row_bar, column_bar) );
     }
 
-    bestPath.push_back( endVertex );
+    bestPath.push_back( path.back() );
     return bestPath;
 }
 
@@ -154,9 +156,14 @@ void Maze::clear() {
 % Parameters:   row    - row of node in maze
 %               column - column of node in maze
 % Description:  Accessor method for maze internal nodal data structures.
-% Return:       MazeNode object at (x, y) position in two-dimensional maze. 
+% Return:       MazeNode pointer at (x, y) position in two-dimensional maze. 
 *****************************************************************************/
 MazeNode & Maze::at( int row, int column ) {
+  if( outOfBounds(row, column) ) {
+    /* cell location out of bounds. Default to (0, 0) */
+    cerr << "Maze:at() out of bounds (" << row << ", " << column << ")";
+    return maze[0][0];
+  }
   return maze[ row ][ column ];
 }
 
