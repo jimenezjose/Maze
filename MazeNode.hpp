@@ -19,32 +19,34 @@ Description:     Cell data structure of the maze.
 
 using namespace std;
 
+// TODO data alignment optimized to reduce node storage from 72 to 56 saved 16 bytes!
+
 /****************************************************************************
 % MazeNode contains information about its location in Maze, and its 
 % reachabble neighbors.
 ****************************************************************************/
 class MazeNode {
 private: 
-  inline static const string ADD_EDGE_ERROR = 
+  static constexpr const char * ADD_EDGE_ERROR = 
     "Error: attempt to add edge to a pair on non-adjacent nodes. ";
-  inline static const string REMOVE_EDGE_ERROR = 
+  static constexpr const char * REMOVE_EDGE_ERROR = 
     "Error: attempt to remove edge to a non-adjacent node. ";
 public:
   static const int MAX_CHILDREN = 4;
   /* cell location in Maze */
   const int row, y;
   const int column, x;
-  /* path optimization attributes for diagonal directions */
-  const double diagonal_x;
-  const double diagonal_y;
   /* children */
   MazeNode * up    = nullptr;
   MazeNode * down  = nullptr;
   MazeNode * left  = nullptr;
   MazeNode * right = nullptr;
+  /* path optimization attributes for diagonal directions */
+  const double diagonal_x;
+  const double diagonal_y;
   /* graph traversal/search data */
-  bool visited = false;
   MazeNode * prev = nullptr;
+  bool visited = false;
   int distance = 0;
 
   /**************************************************************************
@@ -89,7 +91,7 @@ public:
     }
     else {
       /* node is not adjacent */
-      //cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
+      cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
     }
   }
 
@@ -114,7 +116,7 @@ public:
     }
     else {
       /* node is not adjacent */
-      //cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
+      cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
     }
   }
 
