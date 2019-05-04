@@ -15,7 +15,6 @@ Description:     Cell data structure of the maze and internal vertex for the
 #define MAZENODE_HPP
 
 #include <iostream>
-#include <sstream>
 #include <vector>
 #include <string>
 
