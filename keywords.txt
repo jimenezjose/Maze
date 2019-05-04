@@ -7,14 +7,35 @@
 #######################################
 
 Maze	KEYWORD1
+MazeNode	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-setM1Velocity	KEYWORD2
-setM2Velocity	KEYWORD2
-getM1Velocity	KEYWORD2
-getM2Velocity	KEYWORD2
+
+# Maze scope
+addWall	KEYWORD2
+removeWall	KEYWORD2
+clear	KEYWORD2
+clearWalls	KEYWORD2
+at	KEYWORD2
+wallBetween	KEYWORD2
+outOfBounds	KEYWORD2
+getAdjacentCellList	KEYWORD2
+getWidth	KEYWORD2
+getHeight	KEYWORD2
+
+# MazeNode scope
+clearData	KEYWORD2
+setVisited	KEYWORD2
+setPrev	KEYWORD2	
+setDistance	KEYWORD2
+getVisited	KEYWORD2
+getPrev	KEYWORD2
+getDistance	KEYWORD2
+getNeighborList	KEYWORD2
+getDiagonalX	KEYWORD2
+getDiagonalY	KEYWORD2
 
 ######################################
 # Constants (LITERAL1)
