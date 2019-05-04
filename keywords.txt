@@ -1,0 +1,21 @@
+#######################################
+# Syntax Coloring For L298N Library
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Maze	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+setM1Velocity	KEYWORD2
+setM2Velocity	KEYWORD2
+getM1Velocity	KEYWORD2
+getM2Velocity	KEYWORD2
+
+######################################
+# Constants (LITERAL1)
+#######################################

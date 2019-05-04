@@ -22,13 +22,8 @@ Description:     Cell data structure of the maze and internal vertex for the
 using namespace std;
 
 class MazeNode {
-private: 
-  static constexpr const char * ADD_EDGE_ERROR = 
-    "Error: attempt to add edge to a pair on non-adjacent nodes. ";
-  static constexpr const char * REMOVE_EDGE_ERROR = 
-    "Error: attempt to remove edge to a non-adjacent node. ";
 public:
-  static const int MAX_CHILDREN = 4;
+  friend class Maze;
   /* cell location in Maze */
   const int row, y;
   const int column, x;
@@ -65,75 +60,6 @@ public:
   MazeNode( const MazeNode & node ) : row( node.row ), column( node.column ), 
     diagonal_x( node.diagonal_x ), diagonal_y( node.diagonal_y ), 
     y( node.row ), x( node.column ) {}
-
-  /*****************************************************************************
-  % Routine Name: addNeighbor
-  % File:         MazeNode.hpp
-  % Parameters:   node - an adjacent cell in the maze from the calling node.
-  % Description:  Attaches node as neighbobr of the calling node.
-  % Return:       Nothing.
-  *****************************************************************************/
-  void addNeighbor( MazeNode * node ) {
-    if( node == nullptr ) return;
-    if( x == node->x ) {
-      /* computer y-axis is inverted */
-      if( y + 1 == node->y ) down = node;
-      else if( y - 1 == node->y ) up = node;
-    }
-    else if( y == node->y ) {
-      /* normal x-axis convention */
-      if( x + 1 == node->x ) right = node;
-      else if( x - 1 == node->x ) left = node;
-    }
-    else {
-      /* node is not adjacent */
-      #if defined( ARDUINO )
-        if( Serial ) {
-	  Serial.print( ADD_EDGE_ERROR );
-	  Serial.print( *this );
-	  Serial.print( " <-> " );
-	  Serial.print( *node );
-	}
-      #else
-        cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
-      #endif
-    }
-  }
-
-  /*****************************************************************************
-  % Routine Name: removeNode
-  % File:         MazeNode.hpp
-  % Parameters:   node - an adjacent cell in the maze from the calling node. 
-  % Description:  Removes node from the calling cells neighbor list. 
-  % Return:       Nothing.
-  *****************************************************************************/
-  void removeNeighbor( MazeNode * node ) {
-    if( node == nullptr ) return;
-    if( x == node->x ) {
-      /* vertical neighbor */
-      if( y + 1 == node->y ) down = nullptr;
-      else if( y - 1 == node->y ) up = nullptr;
-    }
-    else if( y == node->y ) {
-      /* horizontal neighbor */
-      if( x + 1 == node->x ) right = nullptr;
-      else if( x - 1 == node->x ) left = nullptr;
-    }
-    else {
-      /* node is not adjacent */
-      #if defined( ARDUINO )
-        if( Serial ) {
-	  Serial.print( REMOVE_EDGE_ERROR );
-	  Serial.print( *this );
-	  Serial.print( " <-> " );
-	  Serial.print( *node );
-	}
-      #else
-        cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
-      #endif
-    }
-  }
-
   /*****************************************************************************
   % Routine Name:  clearData
   % File:          MazeNode.hpp
@@ -304,6 +230,82 @@ public:
     os << "(" << node.row << ", " << node.column << ")";
     return os;
   }
+
+private:
+  /*****************************************************************************
+  % Routine Name: addNeighbor
+  % File:         MazeNode.hpp
+  % Parameters:   node - an adjacent cell in the maze from the calling node.
+  % Description:  Attaches node as neighbobr of the calling node.
+  % Return:       Nothing.
+  *****************************************************************************/
+  void addNeighbor( MazeNode * node ) {
+    if( node == nullptr ) return;
+    if( x == node->x ) {
+      /* computer y-axis is inverted */
+      if( y + 1 == node->y ) down = node;
+      else if( y - 1 == node->y ) up = node;
+    }
+    else if( y == node->y ) {
+      /* normal x-axis convention */
+      if( x + 1 == node->x ) right = node;
+      else if( x - 1 == node->x ) left = node;
+    }
+    else {
+      /* node is not adjacent */
+      #if defined( ARDUINO )
+        if( Serial ) {
+	  Serial.print( ADD_EDGE_ERROR );
+	  Serial.print( *this );
+	  Serial.print( " <-> " );
+	  Serial.print( *node );
+	}
+      #else
+        cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
+      #endif
+    }
+  }
+
+  /*****************************************************************************
+  % Routine Name: removeNode
+  % File:         MazeNode.hpp
+  % Parameters:   node - an adjacent cell in the maze from the calling node. 
+  % Description:  Removes node from the calling cells neighbor list. 
+  % Return:       Nothing.
+  *****************************************************************************/
+  void removeNeighbor( MazeNode * node ) {
+    if( node == nullptr ) return;
+    if( x == node->x ) {
+      /* vertical neighbor */
+      if( y + 1 == node->y ) down = nullptr;
+      else if( y - 1 == node->y ) up = nullptr;
+    }
+    else if( y == node->y ) {
+      /* horizontal neighbor */
+      if( x + 1 == node->x ) right = nullptr;
+      else if( x - 1 == node->x ) left = nullptr;
+    }
+    else {
+      /* node is not adjacent */
+      #if defined( ARDUINO )
+        if( Serial ) {
+	  Serial.print( REMOVE_EDGE_ERROR );
+	  Serial.print( *this );
+	  Serial.print( " <-> " );
+	  Serial.print( *node );
+	}
+      #else
+        cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
+      #endif
+    }
+  }
+
+protected: 
+  static constexpr const char * ADD_EDGE_ERROR = 
+    "Error: attempt to add edge to a pair on non-adjacent nodes. ";
+  static constexpr const char * REMOVE_EDGE_ERROR = 
+    "Error: attempt to remove edge to a non-adjacent node. ";
+
 };
 
 #endif
