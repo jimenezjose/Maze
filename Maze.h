@@ -13,7 +13,7 @@ Description:     2D matrix data structure with an internal graph abstraction.
 #ifndef MAZE_H
 #define MAZE_H
 
-#if defined( ARDUINO_NUCLEO_F446RE )
+#if defined( ARDUINO_NUCLEO_F446RE ) || defined( ARDUINO_NUCLEO_F401RE )
 #include <Arduino.h>
 #define ARDUINO 
 #endif
