@@ -13,7 +13,10 @@ Description:     Two dimensional maze data structure for a Micromouse.
 #ifndef MAZE_H
 #define MAZE_H
 
-//#include <Arduino.h>
+#if defined( ARDUINO_NUCLEO_F446RE )
+  #include <Arduino.h>
+#endif
+
 #include <iostream>
 #include <vector>
 #include <utility>
@@ -40,9 +43,6 @@ public:
   void addWall( MazeNode * node_A, MazeNode * node_B );
   /* Removes the wall betweeb two neighbor nodes in maze. */
   void removeWall( MazeNode * node_A, MazeNode * node_B );
-  /* Converts the 90 degree turns in the path to 45 degree steps. */
-  //TODO optimize layer violation -> should be in mouse
-  vector<MazeNode> optimize( vector<MazeNode> & path );
   /* Clears all internal data of node relationships in maze. */
   void clear();
   /* Clears the maze such that no walls will exist between two nodes */

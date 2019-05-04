@@ -134,34 +134,6 @@ void Maze::removeWall( MazeNode * node_A, MazeNode * node_B ) {
 }
 
 /*****************************************************************************
-% Routine Name: optimize
-% File:         Maze.cpp
-% Parameters:   path - linked list path of maze nodes to be optimized.
-% Description:  Path optimization with regards to the micromouse's ability to 
-%               move in diagonal directions.
-% Return:       Nothing. 
-*****************************************************************************/
-vector<MazeNode> Maze::optimize( vector<MazeNode> & path ) {
-    /* validity check */
-    if( path.size() <= 1 ) return path;
- 
-    vector<MazeNode> bestPath;
-    bestPath.push_back( path.front() );
-
-    for( int index = 0; index < path.size() - 1; index++ ) {
-      /* smoothen sharp turns by averaging direction */
-      MazeNode currentNode = path[ index ];
-      MazeNode nextNode = path[ index + 1 ];
-      double row_bar = 0.5 * ( currentNode.row + nextNode.row );
-      double column_bar = 0.5 * ( currentNode.column + nextNode.column );
-      bestPath.push_back( MazeNode(row_bar, column_bar) );
-    }
-
-    bestPath.push_back( path.back() );
-    return bestPath;
-}
-
-/*****************************************************************************
 % Routine Name: clear
 % File:         Maze.cpp
 % Parameters:   None.
