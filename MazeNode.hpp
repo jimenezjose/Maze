@@ -120,6 +120,20 @@ public:
   }
 
   /*****************************************************************************
+  % Routine Name:  clearData
+  % File:          MazeNode.hpp
+  % Parameters:    None. 
+  % Description:   Clear MazeNode graph data.
+  % Return:        Nothing.
+  *****************************************************************************/
+  void clearData() {
+    up = down = left = right = nullptr;
+    prev = nullptr;
+    visited = false;
+    distance = 0;
+  }
+
+  /*****************************************************************************
   % Routine Name:  setVisited
   % File:          MazeNode.hpp
   % Parameters:    visited - this node has been flagged as visited.
@@ -196,9 +210,9 @@ public:
     vector<MazeNode *> neighbor_list = vector<MazeNode *>();
 
     if( up != nullptr ) neighbor_list.push_back( up );
+    if( right != nullptr ) neighbor_list.push_back( right );
     if( down != nullptr ) neighbor_list.push_back( down );
     if( left != nullptr ) neighbor_list.push_back( left );
-    if( right != nullptr ) neighbor_list.push_back( right );
 
     return neighbor_list;
   }

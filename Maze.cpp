@@ -10,11 +10,15 @@
 File Name:       Maze.cpp
 Description:     Graph data structure for a 2D Maze.
 *******************************************************************************/
+#include <iostream>
 #include <vector>
 #include <utility>
 #include "Maze.h"
 
 using namespace std;
+
+//TODO make sure the use as the porgrammer is working as in dont mess with local
+// stack variables and attempt to make a graph from those
 
 /*****************************************************************************
 % Constructor: Maze
@@ -24,14 +28,10 @@ using namespace std;
 % Description: Creates a two dimensional maze data structure.
 *****************************************************************************/
 Maze::Maze( int width, int height ) : width( width ), height( height ) {
-  if( width <= 0 || height <= 0 ) {
-    /* validity check - default to a 1x1 maze. */
-    cerr << "Maze::Maze() Error - aguments must be greater than 0." << endl;
-    width = height = 1;
+  if( width < 0 || height < 0 ) {
+    throw std::length_error("Maze");
   }
-
   maze = vector<vector<MazeNode>>( height, vector<MazeNode>() );
-
   /* creating maze nodes */
   for( int row = 0; row < height; row++ ) {
     for( int column = 0; column < width; column++ ) {
@@ -59,9 +59,13 @@ Maze::~Maze() {
 % Description:  Creates an undirected egde between the given nodes.
 % Return:       Nothing. 
 *****************************************************************************/
-void Maze::addEdge( MazeNode & node_A, MazeNode & node_B ) {
-
+void Maze::addEdge( MazeNode * node_A, MazeNode * node_B ) {
+  if( node_A == nullptr || node_B == nullptr ) return;
+  /* undirected edge added */
+  node_A->addNeighbor( node_B );
+  node_B->addNeighbor( node_A );
 }
+
 
 /*****************************************************************************
 % Routine Name: removeEdge
@@ -71,8 +75,11 @@ void Maze::addEdge( MazeNode & node_A, MazeNode & node_B ) {
 % Description:  Removes an undirected egde that is between the given nodes.
 % Return:       Nothing.
 *****************************************************************************/
-void Maze::removeEdge( MazeNode & node_A, MazeNode & node_B ) {
-
+void Maze::removeEdge( MazeNode * node_A, MazeNode * node_B ) {
+  if( node_A == nullptr || node_B == nullptr ) return;
+  /* removing undirected edge */
+  node_A->removeNeighbor( node_B );
+  node_B->removeNeighbor( node_A );
 }
 
 /*****************************************************************************
@@ -84,7 +91,20 @@ void Maze::removeEdge( MazeNode & node_A, MazeNode & node_B ) {
 % Return:       Nothing. 
 *****************************************************************************/
 void Maze::clearWalls() {
+  for( int row = 0; row < getHeight(); row++ ) {
+    for( int column = 0; column < getWidth(); column++ ) {
+      MazeNode * currentNode = at(row, column);
 
+      if( !outOfBounds(row + 1, column) ) {
+	/* vertical deviation downwards */
+	removeWall( currentNode, at(row + 1, column) );
+      }
+      if( !outOfBounds(row, column + 1) ) {
+	/* horizontal deviation to the right */
+	removeWall( currentNode, at(row, column + 1) );
+      }
+    }
+  }
 }
 
 /*****************************************************************************
@@ -95,8 +115,9 @@ void Maze::clearWalls() {
 % Description:  Creates a wall between two neighbor nodes in maze.
 % Return:       Nothing. 
 *****************************************************************************/
-void Maze::addWall( MazeNode & node_A, MazeNode & node_B ) {
-
+void Maze::addWall( MazeNode * node_A, MazeNode * node_B ) {
+  if( node_A == nullptr || node_B == nullptr ) return;
+  removeEdge( node_A, node_B );
 }
 
 /*****************************************************************************
@@ -107,8 +128,9 @@ void Maze::addWall( MazeNode & node_A, MazeNode & node_B ) {
 % Description:  Removes the wall betweeb two neighbor nodes in maze. 
 % Return:       Nothing. 
 *****************************************************************************/
-void Maze::removeWall( MazeNode & node_A, MazeNode & node_B ) {
-
+void Maze::removeWall( MazeNode * node_A, MazeNode * node_B ) {
+  if( node_A == nullptr || node_B == nullptr ) return;
+  addEdge( node_A, node_B );
 }
 
 /*****************************************************************************
@@ -121,7 +143,7 @@ void Maze::removeWall( MazeNode & node_A, MazeNode & node_B ) {
 *****************************************************************************/
 vector<MazeNode> Maze::optimize( vector<MazeNode> & path ) {
     /* validity check */
-    if( path.size() == 0 ) return path;
+    if( path.size() <= 1 ) return path;
  
     vector<MazeNode> bestPath;
     bestPath.push_back( path.front() );
@@ -147,7 +169,10 @@ vector<MazeNode> Maze::optimize( vector<MazeNode> & path ) {
 % Return:       Nothing. 
 *****************************************************************************/
 void Maze::clear() {
-
+  for( MazeNode * node : *this ) {
+    /* clear data for all nodes in maze */
+    node->clearData();
+  }
 }
 
 /*****************************************************************************
@@ -158,13 +183,11 @@ void Maze::clear() {
 % Description:  Accessor method for maze internal nodal data structures.
 % Return:       MazeNode pointer at (x, y) position in two-dimensional maze. 
 *****************************************************************************/
-MazeNode & Maze::at( int row, int column ) {
+MazeNode * Maze::at( int row, int column ) {
   if( outOfBounds(row, column) ) {
-    /* cell location out of bounds. Default to (0, 0) */
-    cerr << "Maze:at() out of bounds (" << row << ", " << column << ")";
-    return maze[0][0];
+    throw std::out_of_range("Maze");
   }
-  return maze[ row ][ column ];
+  return &maze[ row ][ column ];
 }
 
 /*****************************************************************************
@@ -176,18 +199,34 @@ MazeNode & Maze::at( int row, int column ) {
 % Return:       True if and only if (row,column) does not exist in maze. 
 *****************************************************************************/
 bool Maze::outOfBounds( int row, int column) {
-  return false;
+  bool row_out_of_bounds = row < 0 || row >= getHeight();
+  bool column_out_of_bounds = column < 0 || column >= getWidth();
+  return row_out_of_bounds || column_out_of_bounds;
 }
 
 /*****************************************************************************
-% Routine Name: getAdjacentCellsList
+% Routine Name: getAdjacentCellList
 % File:         Maze.cpp
 % Parameters:   node - the node of interest in the maze.
 % Description:  Gets all global adjacent neighbors of node in maze.
 % Return:       A list of all existing adjacent neighbors of node in maze.
 *****************************************************************************/
-vector<MazeNode> Maze::getAdjacentCellsList( MazeNode & node ) {
-  return vector<MazeNode>();
+vector<MazeNode *> Maze::getAdjacentCellList( MazeNode * node ) {
+  if( node == nullptr ) return vector<MazeNode *>();
+  const int MAX_CELLS = 4;
+  const int EVEN = 2;
+  vector<MazeNode *> list;
+
+  for( int index = 0; index < MAX_CELLS; index++ ) {
+    /* append all adjacent neighbors to list */
+    int deviation = ( index < EVEN ) ? -1 : +1;
+    int dr = ( index % EVEN == 0 ) ? deviation : 0;
+    int dc = ( index % EVEN == 1 ) ? -deviation : 0;
+    if( !outOfBounds(node->row + dr, node->column + dc) ) { 
+      list.push_back( at(node->row + dr, node->column + dc) );
+    }
+  }
+  return list;
 }
 
 /*****************************************************************************
@@ -216,11 +255,11 @@ int Maze::getHeight() {
 % Routine Name: Maze::Iterator::operator * 
 % File:         Maze.cpp
 % Parameters:   None.
-% Description:  Overloads the * operator to direference the maze node pointer.
+% Description:  Overloads the * operator to return the curr maze node pointer.
 % Return:       The maze node that curr points to. 
 *****************************************************************************/
-MazeNode Maze::Iterator::operator*() const {
-  return *curr;
+MazeNode * Maze::Iterator::operator*() const {
+  return curr;
 }
 
 /*****************************************************************************
@@ -232,7 +271,7 @@ MazeNode Maze::Iterator::operator*() const {
 % Return:       The calling maze iteartor.
 *****************************************************************************/
 Maze::Iterator Maze::Iterator::operator++() {
-  MazeNode * end = &maze.at( maze.getHeight() - 1, maze.getWidth() - 1 );
+  MazeNode * end = maze.at( maze.getHeight() - 1, maze.getWidth() - 1 );
 
   if( curr == end ) {
     /* terminating case */
@@ -242,11 +281,11 @@ Maze::Iterator Maze::Iterator::operator++() {
 
   if( curr->column + 1 == maze.getWidth() ) {
     /* wrapping around 2d array */
-    curr = &maze.at( curr->row + 1, 0 );
+    curr = maze.at( curr->row + 1, 0 );
   }
   else {
     /* typical 1d array iteration */
-    curr = &maze.at( curr->row, curr->column + 1);
+    curr = maze.at( curr->row, curr->column + 1);
   }
   return *this;
 }
