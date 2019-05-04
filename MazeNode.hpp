@@ -14,7 +14,9 @@ Description:     Cell data structure of the maze.
 #define MAZENODE_HPP
 
 #include <iostream>
+#include <sstream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -90,7 +92,16 @@ public:
     }
     else {
       /* node is not adjacent */
-      cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
+      #if defined( ARDUINO )
+        if( Serial ) {
+	  Serial.print( ADD_EDGE_ERROR );
+	  Serial.print( *this );
+	  Serial.print( " <-> " );
+	  Serial.print( *node );
+	}
+      #else
+        cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
+      #endif
     }
   }
 
@@ -115,7 +126,16 @@ public:
     }
     else {
       /* node is not adjacent */
-      cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
+      #if defined( ARDUINO )
+        if( Serial ) {
+	  Serial.print( REMOVE_EDGE_ERROR );
+	  Serial.print( *this );
+	  Serial.print( " <-> " );
+	  Serial.print( *node );
+	}
+      #else
+        cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
+      #endif
     }
   }
 
@@ -242,7 +262,7 @@ public:
   }
 
   /*****************************************************************************
-  % Routine Name: operator==
+  % Routine Name: operator ==
   % File:         MazeNode.hpp
   % Parameters:   node - node that will be compared with the calling node.
   % Description:  Evaluates of two nodes are internally equivalent.
@@ -253,18 +273,32 @@ public:
   }
 
   /*****************************************************************************
-  % Routine Name: operator== TODO
+  % Routine Name: operator =
   % File:         MazeNode.hpp
-  % Parameters:   node - node that will be compared with the calling node.
-  % Description:  Evaluates of two nodes are internally equivalent.
-  % Return:       True if and only if node is equivaluent to the calling node.
+  % Parameters:   node - node that will be copied. 
+  % Description:  calls the copy constructor on the node passed. 
+  % Return:       A new copied MazeNode from the node passed. 
   *****************************************************************************/
   MazeNode operator=( const MazeNode & node ) {
     return MazeNode( node );
   }
 
+
   /*****************************************************************************
-  % Routine Name:  operator<<
+  % Routine Name: operator (const char *)
+  % File:         MazeNode.hpp
+  % Parameters:   None. 
+  % Description:  Overloads the type cast (const char *) to emulate implicit 
+  %               string conversion of calling MazeNode. 
+  % Return:       STring representation of calling node. 
+  *****************************************************************************/
+  operator const char *() {
+    string node_info = "(" + to_string(row) + ", " + to_string(column) + ")";
+    return node_info.c_str();
+  }
+
+  /*****************************************************************************
+  % Routine Name:  operator <<
   % File:          MazeNode.cpp
   % Parameters:    os   - output stream .
   %                node - node of interest.  

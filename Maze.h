@@ -14,7 +14,8 @@ Description:     Two dimensional maze data structure for a Micromouse.
 #define MAZE_H
 
 #if defined( ARDUINO_NUCLEO_F446RE )
-  #include <Arduino.h>
+#include <Arduino.h>
+#define ARDUINO 
 #endif
 
 #include <iostream>

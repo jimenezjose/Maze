@@ -17,9 +17,6 @@ Description:     Graph data structure for a 2D Maze.
 
 using namespace std;
 
-//TODO make sure the use as the porgrammer is working as in dont mess with local
-// stack variables and attempt to make a graph from those
-
 /*****************************************************************************
 % Constructor: Maze
 % File:        Maze.cpp
@@ -29,7 +26,11 @@ using namespace std;
 *****************************************************************************/
 Maze::Maze( int width, int height ) : width( width ), height( height ) {
   if( width < 0 || height < 0 ) {
-    throw std::length_error("Maze");
+    #if defined( ARDUINO )
+      width = height = 1;
+    #else
+      throw std::length_error("Maze");
+    #endif
   }
   maze = vector<vector<MazeNode>>( height, vector<MazeNode>() );
   /* creating maze nodes */
@@ -41,15 +42,12 @@ Maze::Maze( int width, int height ) : width( width ), height( height ) {
 }
 
 /*****************************************************************************
-% Constructor: Maze TODO
+% Destructor: ~Maze 
 % File:        Maze.cpp
-% Parameters:  width  - width of rectangular maze.
-%              height - height of rectangular maze.
-% Description: Creates a two dimensional maze data structure.
+% Parameters:  None.
+% Description: Deletes all heap allocated memory associated with the maze.
 *****************************************************************************/
-Maze::~Maze() {
-
-}
+Maze::~Maze() {}
 
 /*****************************************************************************
 % Routine Name: addEdge
@@ -157,7 +155,14 @@ void Maze::clear() {
 *****************************************************************************/
 MazeNode * Maze::at( int row, int column ) {
   if( outOfBounds(row, column) ) {
-    throw std::out_of_range("Maze");
+    #if defined( ARDUINO )
+      if( Serial ) {
+        Serial.println( "Maze::at() out of range. Defaulting to (0, 0)");
+      }
+      row = column = 0;
+    #else
+      throw std::out_of_range("Maze");
+    #endif
   }
   return &maze[ row ][ column ];
 }
