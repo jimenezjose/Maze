@@ -8,7 +8,7 @@
                       IEEE Micromouse Team 2019
 
 File Name:       Maze.h
-Description:     Two dimensional maze data structure for a Micromouse. 
+Description:     2D matrix data structure with an internal graph abstraction. 
 *******************************************************************************/
 #ifndef MAZE_H
 #define MAZE_H

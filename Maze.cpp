@@ -8,11 +8,8 @@
                       IEEE Micromouse Team 2019
 
 File Name:       Maze.cpp
-Description:     Graph data structure for a 2D Maze.
+Description:     2D matrix data structure with an internal graph abstraction. 
 *******************************************************************************/
-#include <iostream>
-#include <vector>
-#include <utility>
 #include "Maze.h"
 
 using namespace std;

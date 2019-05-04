@@ -8,7 +8,8 @@
                       IEEE Micromouse Team 2019
 
 File Name:       MazeNode.hpp
-Description:     Cell data structure of the maze.
+Description:     Cell data structure of the maze and internal vertex for the 
+                 graph abstraction of the maze.
 *******************************************************************************/
 #ifndef MAZENODE_HPP
 #define MAZENODE_HPP
@@ -20,12 +21,6 @@ Description:     Cell data structure of the maze.
 
 using namespace std;
 
-// TODO data alignment optimized to reduce node storage from 72 to 56 saved 16 bytes!
-
-/****************************************************************************
-% MazeNode contains information about its location in its Maze, and its 
-% reachabble neighbors.
-****************************************************************************/
 class MazeNode {
 private: 
   static constexpr const char * ADD_EDGE_ERROR = 
@@ -47,8 +42,8 @@ public:
   const double diagonal_y;
   /* graph traversal/search data */
   MazeNode * prev = nullptr;
-  bool visited = false;
   int distance = 0;
+  bool visited = false;
 
   /**************************************************************************
   % Constructor:  MazeNode 
@@ -310,4 +305,5 @@ public:
     return os;
   }
 };
+
 #endif
