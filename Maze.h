@@ -13,16 +13,20 @@ Description:     2D matrix data structure with an internal graph abstraction.
 #ifndef MAZE_H
 #define MAZE_H
 
-#if defined( ARDUINO_NUCLEO_F446RE ) || defined( ARDUINO_NUCLEO_F401RE )
-#include <Arduino.h>
-#define ARDUINO 
+#if defined( ARDUINO_ARCH_STM32 )
+  #include <Arduino.h>
 #endif
 
-#include <iostream>
-#include <vector>
-#include <utility>
-#include <iterator>
-#include "MazeNode.hpp"
+/* stm32 architecture or non arduino */
+#if defined( ARDUINO_ARCH_STM32 ) || !defined( ARDUINO )
+  #include <iostream>
+  #include <vector>
+  #include <utility>
+  #include <iterator>
+  #include "MazeNode.hpp"
+#else
+  #error "board not supported." 
+#endif
 
 using namespace std;
 
