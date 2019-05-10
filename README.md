@@ -1,7 +1,7 @@
 # Maze
 Maze Data Structure
 
-## Example Use:
+## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
 
 | Functions     | Summary       | Cool  |
