@@ -3,11 +3,17 @@ Two-Dimensional Maze data structure.
 
 ## Arduino Installation:
 To learn how to include the Maze library to your Arduino project click [here](https://www.arduino.cc/en/guide/libraries#toc4). 
+```arduino
+#include <Maze.h>
+```
 
 ## C++ Library Installation:
-Download the repository as normal.
+Download the repository to your project directory.
+```c++
+#include "Maze-master/Maze.h"
+```
 
-# 
+# Member Functions
 
 | Functions     | Summary       | 
 | ------------- |:-------------:| 
