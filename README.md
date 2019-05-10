@@ -1,6 +1,8 @@
 # Maze
 Maze Data Structure
 
+![Alt Text]()
+
 | Functions     | Summary       | Cool  |
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-aligned | $1600 |
