@@ -13,9 +13,9 @@ Download the repository as normal.
 | ------------- |:-------------:| -----:|
 | col 3 is      | right-aligned | $1600 |
 
-'''c++
+```c++
 int index = 0;
-'''
+```
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
