@@ -19,12 +19,12 @@ Download the repository to your project directory.
 | -------------------  |:-----------------------------------------------------------:| 
 | `Maze::addWall()`    | Creates a wall between two neighboring cells in the maze.   | 
 | `Maze::removeWall()` | Removes the wall betweeb two neighboring cells in the maze. |
-| `Maze::clear()` | Clears all internal data of node relationships in maze. |
-| `Maze::clearWalls()` | Clears the maze such that no walls will exist between two nodes |
+| `Maze::clear()` | Clears all internal data of cell relationships in maze. |
+| `Maze::clearWalls()` | Clears the maze such that no walls will exist between two cells |
 | `Maze::at()` | Accessor method for maze internal nodal data structures. |
-| `Maze::wallBetween( MazeCell * cell_A, MazeCell * cell_B )` | Checks if there exists a wall between the given nodes. |
+| `Maze::wallBetween( MazeCell * cell_A, MazeCell * cell_B )` | Checks if there exists a wall between the given cells. |
 | `Maze::outOfBounds( int row, int column )` | Checks if the (row, column) coordinate is not in the maze. |
-| `Maze::getAdjacentCellList( MazeCell * cell )` | Gets all global adjacent neighbors of node in maze. |
+| `Maze::getAdjacentCellList( MazeCell * cell )` | Gets all global adjacent neighbors of cell in maze. |
 | `Maze::getWidth()` | Getter method for the width, in unit cells, of the maze. |
 | `Maze::getHeight()` | Getter method for the height, in unit cells, of the maze. |
 
