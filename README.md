@@ -18,6 +18,10 @@ Download the repository to your project directory.
 | Functions | Description| 
 | -------------------  |:-----------------------------------------------------------:| 
 | `Maze::addWall()`    | Creates a wall between two neighboring cells in the maze.   | 
+| a | 
+```c++
+int index = 0;
+``` |
 | `Maze::removeWall()` | Removes the wall betweeb two neighboring cells in the maze. |
 | `Maze::clear()` | Clears all internal data of node relationships in maze. |
 | `Maze::clearWalls()` | Clears the maze such that no walls will exist between two nodes |
