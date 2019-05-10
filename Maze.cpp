@@ -29,11 +29,11 @@ Maze::Maze( int width, int height ) : width( width ), height( height ) {
       throw std::length_error("Maze");
     #endif
   }
-  maze = vector<vector<MazeNode>>( height, vector<MazeNode>() );
-  /* creating maze nodes */
+  maze = vector<vector<MazeCell>>( height, vector<MazeCell>() );
+  /* creating maze cells */
   for( int row = 0; row < height; row++ ) {
     for( int column = 0; column < width; column++ ) {
-      maze[ row ].push_back( MazeNode(row, column) );
+      maze[ row ].push_back( MazeCell(row, column) );
     }
   }
 }
@@ -49,32 +49,32 @@ Maze::~Maze() {}
 /*****************************************************************************
 % Routine Name: addEdge
 % File:         Maze.cpp
-% Parameters:   node_A - a cell in this maze.
-%               node_B - a cell in this maze.
-% Description:  Creates an undirected egde between the given nodes.
+% Parameters:   cell_A - a cell in this maze.
+%               cell_B - a cell in this maze.
+% Description:  Creates an undirected egde between the given cells.
 % Return:       Nothing. 
 *****************************************************************************/
-void Maze::addEdge( MazeNode * node_A, MazeNode * node_B ) {
-  if( node_A == nullptr || node_B == nullptr ) return;
+void Maze::addEdge( MazeCell * cell_A, MazeCell * cell_B ) {
+  if( cell_A == nullptr || cell_B == nullptr ) return;
   /* undirected edge added */
-  node_A->addNeighbor( node_B );
-  node_B->addNeighbor( node_A );
+  cell_A->addNeighbor( cell_B );
+  cell_B->addNeighbor( cell_A );
 }
 
 
 /*****************************************************************************
 % Routine Name: removeEdge
 % File:         Maze.cpp
-% Parameters:   node_A - a cell in this maze.
-%               node_B - a cell in this maze.
-% Description:  Removes an undirected egde that is between the given nodes.
+% Parameters:   cell_A - a cell in this maze.
+%               cell_B - a cell in this maze.
+% Description:  Removes an undirected egde that is between the given cells.
 % Return:       Nothing.
 *****************************************************************************/
-void Maze::removeEdge( MazeNode * node_A, MazeNode * node_B ) {
-  if( node_A == nullptr || node_B == nullptr ) return;
+void Maze::removeEdge( MazeCell * cell_A, MazeCell * cell_B ) {
+  if( cell_A == nullptr || cell_B == nullptr ) return;
   /* removing undirected edge */
-  node_A->removeNeighbor( node_B );
-  node_B->removeNeighbor( node_A );
+  cell_A->removeNeighbor( cell_B );
+  cell_B->removeNeighbor( cell_A );
 }
 
 /*****************************************************************************
@@ -88,7 +88,7 @@ void Maze::removeEdge( MazeNode * node_A, MazeNode * node_B ) {
 void Maze::clearWalls() {
   for( int row = 0; row < getHeight(); row++ ) {
     for( int column = 0; column < getWidth(); column++ ) {
-      MazeNode * currentNode = at(row, column);
+      MazeCell * currentNode = at(row, column);
 
       if( !outOfBounds(row + 1, column) ) {
 	/* vertical deviation downwards */
@@ -105,52 +105,52 @@ void Maze::clearWalls() {
 /*****************************************************************************
 % Routine Name: addWall
 % File:         Maze.cpp
-% Parameters:   node_A - a cell in this maze.
-%               node_B - a cell in this maze.
-% Description:  Creates a wall between two neighbor nodes in maze.
+% Parameters:   cell_A - a cell in this maze.
+%               cell_B - a cell in this maze.
+% Description:  Creates a wall between two neighbor cells in maze.
 % Return:       Nothing. 
 *****************************************************************************/
-void Maze::addWall( MazeNode * node_A, MazeNode * node_B ) {
-  if( node_A == nullptr || node_B == nullptr ) return;
-  removeEdge( node_A, node_B );
+void Maze::addWall( MazeCell * cell_A, MazeCell * cell_B ) {
+  if( cell_A == nullptr || cell_B == nullptr ) return;
+  removeEdge( cell_A, cell_B );
 }
 
 /*****************************************************************************
 % Routine Name: removeWall 
 % File:         Maze.cpp
-% Parameters:   node_A - a cell in this maze.
-%               node_B - a cell in this maze.
-% Description:  Removes the wall betweeb two neighbor nodes in maze. 
+% Parameters:   cell_A - a cell in this maze.
+%               cell_B - a cell in this maze.
+% Description:  Removes the wall betweeb two neighbor cells in maze. 
 % Return:       Nothing. 
 *****************************************************************************/
-void Maze::removeWall( MazeNode * node_A, MazeNode * node_B ) {
-  if( node_A == nullptr || node_B == nullptr ) return;
-  addEdge( node_A, node_B );
+void Maze::removeWall( MazeCell * cell_A, MazeCell * cell_B ) {
+  if( cell_A == nullptr || cell_B == nullptr ) return;
+  addEdge( cell_A, cell_B );
 }
 
 /*****************************************************************************
 % Routine Name: clear
 % File:         Maze.cpp
 % Parameters:   None.
-% Description:  Clears all internal data of node relationships in maze.
+% Description:  Clears all internal data of cell relationships in maze.
 % Return:       Nothing. 
 *****************************************************************************/
 void Maze::clear() {
-  for( MazeNode * node : *this ) {
-    /* clear data for all nodes in maze */
-    node->clearData();
+  for( MazeCell * cell : *this ) {
+    /* clear data for all cells in maze */
+    cell->clearData();
   }
 }
 
 /*****************************************************************************
 % Routine Name: at
 % File:         Maze.cpp
-% Parameters:   row    - row of node in maze
-%               column - column of node in maze
+% Parameters:   row    - row of cell in maze
+%               column - column of cell in maze
 % Description:  Accessor method for maze internal nodal data structures.
-% Return:       MazeNode pointer at (x, y) position in two-dimensional maze. 
+% Return:       MazeCell pointer at (x, y) position in two-dimensional maze. 
 *****************************************************************************/
-MazeNode * Maze::at( int row, int column ) {
+MazeCell * Maze::at( int row, int column ) {
   if( outOfBounds(row, column) ) {
     #if defined( ARDUINO )
       if( Serial ) {
@@ -181,23 +181,23 @@ bool Maze::outOfBounds( int row, int column) {
 /*****************************************************************************
 % Routine Name: getAdjacentCellList
 % File:         Maze.cpp
-% Parameters:   node - the node of interest in the maze.
-% Description:  Gets all global adjacent neighbors of node in maze.
-% Return:       A list of all existing adjacent neighbors of node in maze.
+% Parameters:   cell - the cell of interest in the maze.
+% Description:  Gets all global adjacent neighbors of cell in maze.
+% Return:       A list of all existing adjacent neighbors of cell in maze.
 *****************************************************************************/
-vector<MazeNode *> Maze::getAdjacentCellList( MazeNode * node ) {
-  if( node == nullptr ) return vector<MazeNode *>();
+vector<MazeCell *> Maze::getAdjacentCellList( MazeCell * cell ) {
+  if( cell == nullptr ) return vector<MazeCell *>();
   const int MAX_CELLS = 4;
   const int EVEN = 2;
-  vector<MazeNode *> list;
+  vector<MazeCell *> list;
 
   for( int index = 0; index < MAX_CELLS; index++ ) {
     /* append all adjacent neighbors to list */
     int deviation = ( index < EVEN ) ? -1 : +1;
     int dr = ( index % EVEN == 0 ) ? deviation : 0;
     int dc = ( index % EVEN == 1 ) ? -deviation : 0;
-    if( !outOfBounds(node->row + dr, node->column + dc) ) { 
-      list.push_back( at(node->row + dr, node->column + dc) );
+    if( !outOfBounds(cell->row + dr, cell->column + dc) ) { 
+      list.push_back( at(cell->row + dr, cell->column + dc) );
     }
   }
   return list;
@@ -229,10 +229,10 @@ int Maze::getHeight() {
 % Routine Name: Maze::Iterator::operator * 
 % File:         Maze.cpp
 % Parameters:   None.
-% Description:  Overloads the * operator to return the curr maze node pointer.
-% Return:       The maze node that curr points to. 
+% Description:  Overloads the * operator to return the curr maze cell pointer.
+% Return:       The maze cell that curr points to. 
 *****************************************************************************/
-MazeNode * Maze::Iterator::operator*() const {
+MazeCell * Maze::Iterator::operator*() const {
   return curr;
 }
 
@@ -241,11 +241,11 @@ MazeNode * Maze::Iterator::operator*() const {
 % File:         Maze.cpp
 % Parameters:   None.
 % Description:  Overloads the prefix operator++ and moves curr to the 
-%               successor node of the maze container.
+%               successor cell of the maze container.
 % Return:       The calling maze iteartor.
 *****************************************************************************/
 Maze::Iterator Maze::Iterator::operator++() {
-  MazeNode * end = maze.at( maze.getHeight() - 1, maze.getWidth() - 1 );
+  MazeCell * end = maze.at( maze.getHeight() - 1, maze.getWidth() - 1 );
 
   if( curr == end ) {
     /* terminating case */

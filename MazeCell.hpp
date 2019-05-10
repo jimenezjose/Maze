@@ -7,12 +7,12 @@
                  University of California, San Diego
                       IEEE Micromouse Team 2019
 
-File Name:       MazeNode.hpp
+File Name:       MazeCell.hpp
 Description:     Cell data structure of the maze and internal vertex for the 
                  graph abstraction of the maze.
 *******************************************************************************/
-#ifndef MAZENODE_HPP
-#define MAZENODE_HPP
+#ifndef MAZECELL_HPP
+#define MAZECELL_HPP
 
 #include <iostream>
 #include <vector>
@@ -20,50 +20,50 @@ Description:     Cell data structure of the maze and internal vertex for the
 
 using namespace std;
 
-class MazeNode {
+class MazeCell {
 public:
   friend class Maze;
   /* cell location in Maze */
   const int row, y;
   const int column, x;
   /* children */
-  MazeNode * up    = nullptr;
-  MazeNode * down  = nullptr;
-  MazeNode * left  = nullptr;
-  MazeNode * right = nullptr;
+  MazeCell * up    = nullptr;
+  MazeCell * down  = nullptr;
+  MazeCell * left  = nullptr;
+  MazeCell * right = nullptr;
   /* path optimization attributes for diagonal directions */
   const double diagonal_x;
   const double diagonal_y;
   /* graph traversal/search data */
-  MazeNode * prev = nullptr;
+  MazeCell * prev = nullptr;
   int distance = 0;
   bool visited = false;
 
   /**************************************************************************
-  % Constructor:  MazeNode 
-  % File:         MazeNode.hpp
-  % Parameters:   row    - row that the node belongs to in maze.
-  %               column - column that the node belongs to in maze. 
-  % Description:  Creates a node object for an associated cell in a 2D maze. 
+  % Constructor:  MazeCell 
+  % File:         MazeCell.hpp
+  % Parameters:   row    - row that the cell belongs to in maze.
+  %               column - column that the cell belongs to in maze. 
+  % Description:  Creates a cell object for an associated cell in a 2D maze. 
   **************************************************************************/
-  MazeNode( double row, double column ) : row( (int)row ), column( (int)column ), 
+  MazeCell( double row, double column ) : row( (int)row ), column( (int)column ), 
     diagonal_x( column ), diagonal_y( row ), y( (int)row ), x( (int)column ) {}
 
   /**************************************************************************
-  % Constructor:  MazeNode 
-  % File:         MazeNode.hpp
-  % Parameters:   row    - row that the node belongs to in maze.
-  %               column - column that the node belongs to in maze. 
-  % Description:  Creates a node object for an associated cell in a 2D maze. 
+  % Constructor:  MazeCell 
+  % File:         MazeCell.hpp
+  % Parameters:   row    - row that the cell belongs to in maze.
+  %               column - column that the cell belongs to in maze. 
+  % Description:  Creates a cell object for an associated cell in a 2D maze. 
   **************************************************************************/
-  MazeNode( const MazeNode & node ) : row( node.row ), column( node.column ), 
-    diagonal_x( node.diagonal_x ), diagonal_y( node.diagonal_y ), 
-    y( node.row ), x( node.column ) {}
+  MazeCell( const MazeCell & cell ) : row( cell.row ), column( cell.column ), 
+    diagonal_x( cell.diagonal_x ), diagonal_y( cell.diagonal_y ), 
+    y( cell.row ), x( cell.column ) {}
   /*****************************************************************************
   % Routine Name:  clearData
-  % File:          MazeNode.hpp
+  % File:          MazeCell.hpp
   % Parameters:    None. 
-  % Description:   Clear MazeNode graph data.
+  % Description:   Clear MazeCell graph data.
   % Return:        Nothing.
   *****************************************************************************/
   void clearData() {
@@ -75,8 +75,8 @@ public:
 
   /*****************************************************************************
   % Routine Name:  setVisited
-  % File:          MazeNode.hpp
-  % Parameters:    visited - this node has been flagged as visited.
+  % File:          MazeCell.hpp
+  % Parameters:    visited - this cell has been flagged as visited.
   % Description:   Setter method for visited attribute.
   % Return:        Nothing.
   *****************************************************************************/
@@ -86,19 +86,19 @@ public:
 
   /*****************************************************************************
   % Routine Name:  setPrev
-  % File:          MazeNode.hpp
-  % Parameters:    prev - link a node to this node.
+  % File:          MazeCell.hpp
+  % Parameters:    prev - link a cell to this cell.
   % Description:   Setter method for the prev attribute.
   % Return:        Nothing.
   *****************************************************************************/
-  void setPrev( MazeNode * prev ) {
+  void setPrev( MazeCell * prev ) {
     this->prev = prev;
   }
 
   /*****************************************************************************
   % Routine Name:  setDistance
-  % File:          MazeNode.hpp
-  % Parameters:    distance - mark this node the given distance attribute.
+  % File:          MazeCell.hpp
+  % Parameters:    distance - mark this cell the given distance attribute.
   % Description:   Setter method for the distance attribute.
   % Return:        Nothing.
   *****************************************************************************/
@@ -108,7 +108,7 @@ public:
 
   /*****************************************************************************
   % Routine Name:  getVisited
-  % File:          MazeNode.hpp
+  % File:          MazeCell.hpp
   % Parameters:    None.
   % Description:   Getter method for the visited attribute.
   % Return:        The visited attribute value.
@@ -119,18 +119,18 @@ public:
 
   /*****************************************************************************
   % Routine Name:  getPrev
-  % File:          MazeNode.hpp
+  % File:          MazeCell.hpp
   % Parameters:    None.
   % Description:   Getter method for the prev attribute.
   % Return:        The prev attribute.
   *****************************************************************************/
-  MazeNode * getPrev() {
+  MazeCell * getPrev() {
     return prev;
   }
 
   /*****************************************************************************
   % Routine Name:  getDistance
-  % File :         MazeNode.hpp
+  % File :         MazeCell.hpp
   % Parameters:    None.
   % Description:   Getter method for the distance attribute.
   % Return:        The distance attribute value.
@@ -141,13 +141,13 @@ public:
 
   /*****************************************************************************
   % Routine Name: getNeighborList
-  % File:         MazeNode.hpp
+  % File:         MazeCell.hpp
   % Parameters:   None.
-  % Description:  Gets a list of the neighboring cells of the calling node.
+  % Description:  Gets a list of the neighboring cells of the calling cell.
   % Return:       An iterable list of neighbors.
   *****************************************************************************/
-  vector<MazeNode *> getNeighborList() {
-    vector<MazeNode *> neighbor_list = vector<MazeNode *>();
+  vector<MazeCell *> getNeighborList() {
+    vector<MazeCell *> neighbor_list = vector<MazeCell *>();
 
     if( up != nullptr ) neighbor_list.push_back( up );
     if( right != nullptr ) neighbor_list.push_back( right );
@@ -159,7 +159,7 @@ public:
 
   /*****************************************************************************
   % Routine Name: getDiagonalX
-  % File:         MazeNode.hpp
+  % File:         MazeCell.hpp
   % Parameters:   None.
   % Description:  Getter for attribute diagonal_x. diagonal_x is used for path 
   %               optimization and it allows "half-steps" in the x-axis.
@@ -171,7 +171,7 @@ public:
 
   /*****************************************************************************
   % Routine Name: getDiagonalY
-  % File:         MazeNode.hpp
+  % File:         MazeCell.hpp
   % Parameters:   None.
   % Description:  Getter for attribute diagona_y, which is used for diagonal 
   %               directions while traversing the  maze.
@@ -183,127 +183,127 @@ public:
 
   /*****************************************************************************
   % Routine Name: operator ==
-  % File:         MazeNode.hpp
-  % Parameters:   node - node that will be compared with the calling node.
-  % Description:  Evaluates of two nodes are internally equivalent.
-  % Return:       True if and only if node is equivaluent to the calling node.
+  % File:         MazeCell.hpp
+  % Parameters:   cell - cell that will be compared with the calling cell.
+  % Description:  Evaluates of two cells are internally equivalent.
+  % Return:       True if and only if cell is equivaluent to the calling cell.
   *****************************************************************************/
-  bool operator==( const MazeNode & node ) {
-    return ( x == node.x && y == node.y );
+  bool operator==( const MazeCell & cell ) {
+    return ( x == cell.x && y == cell.y );
   }
 
   /*****************************************************************************
   % Routine Name: operator =
-  % File:         MazeNode.hpp
-  % Parameters:   node - node that will be copied. 
-  % Description:  calls the copy constructor on the node passed. 
-  % Return:       A new copied MazeNode from the node passed. 
+  % File:         MazeCell.hpp
+  % Parameters:   cell - cell that will be copied. 
+  % Description:  calls the copy constructor on the cell passed. 
+  % Return:       A new copied MazeCell from the cell passed. 
   *****************************************************************************/
-  MazeNode operator=( const MazeNode & node ) {
-    return MazeNode( node );
+  MazeCell operator=( const MazeCell & cell ) {
+    return MazeCell( cell );
   }
 
 
   /*****************************************************************************
   % Routine Name: operator (const char *)
-  % File:         MazeNode.hpp
+  % File:         MazeCell.hpp
   % Parameters:   None. 
   % Description:  Overloads the type cast (const char *) to emulate implicit 
-  %               string conversion of calling MazeNode. 
-  % Return:       STring representation of calling node. 
+  %               string conversion of calling MazeCell. 
+  % Return:       STring representation of calling cell. 
   *****************************************************************************/
   operator const char *() {
-    string node_info = "(" + to_string(row) + ", " + to_string(column) + ")";
-    return node_info.c_str();
+    string cell_info = "(" + to_string(row) + ", " + to_string(column) + ")";
+    return cell_info.c_str();
   }
 
   /*****************************************************************************
   % Routine Name:  operator <<
-  % File:          MazeNode.cpp
+  % File:          MazeCell.cpp
   % Parameters:    os   - output stream .
-  %                node - node of interest.  
-  % Description:   Allows for implicit string conversion of node when printing. 
+  %                cell - cell of interest.  
+  % Description:   Allows for implicit string conversion of cell when printing. 
   % Return:        The passed output stram object.
   *****************************************************************************/
-  friend ostream & operator<<( ostream & os, MazeNode & node ) {
-    os << "(" << node.row << ", " << node.column << ")";
+  friend ostream & operator<<( ostream & os, MazeCell & cell ) {
+    os << "(" << cell.row << ", " << cell.column << ")";
     return os;
   }
 
 private:
   /*****************************************************************************
   % Routine Name: addNeighbor
-  % File:         MazeNode.hpp
-  % Parameters:   node - an adjacent cell in the maze from the calling node.
-  % Description:  Attaches node as neighbobr of the calling node.
+  % File:         MazeCell.hpp
+  % Parameters:   cell - an adjacent cell in the maze from the calling cell.
+  % Description:  Attaches cell as neighbobr of the calling cell.
   % Return:       Nothing.
   *****************************************************************************/
-  void addNeighbor( MazeNode * node ) {
-    if( node == nullptr ) return;
-    if( x == node->x ) {
+  void addNeighbor( MazeCell * cell ) {
+    if( cell == nullptr ) return;
+    if( x == cell->x ) {
       /* computer y-axis is inverted */
-      if( y + 1 == node->y ) down = node;
-      else if( y - 1 == node->y ) up = node;
+      if( y + 1 == cell->y ) down = cell;
+      else if( y - 1 == cell->y ) up = cell;
     }
-    else if( y == node->y ) {
+    else if( y == cell->y ) {
       /* normal x-axis convention */
-      if( x + 1 == node->x ) right = node;
-      else if( x - 1 == node->x ) left = node;
+      if( x + 1 == cell->x ) right = cell;
+      else if( x - 1 == cell->x ) left = cell;
     }
     else {
-      /* node is not adjacent */
+      /* cell is not adjacent */
       #if defined( ARDUINO )
         if( Serial ) {
 	  Serial.print( ADD_EDGE_ERROR );
 	  Serial.print( *this );
 	  Serial.print( " <-> " );
-	  Serial.print( *node );
+	  Serial.print( *cell );
 	}
       #else
-        cerr << ADD_EDGE_ERROR << *this << " <-> " << *node;
+        cerr << ADD_EDGE_ERROR << *this << " <-> " << *cell;
       #endif
     }
   }
 
   /*****************************************************************************
   % Routine Name: removeNode
-  % File:         MazeNode.hpp
-  % Parameters:   node - an adjacent cell in the maze from the calling node. 
-  % Description:  Removes node from the calling cells neighbor list. 
+  % File:         MazeCell.hpp
+  % Parameters:   cell - an adjacent cell in the maze from the calling cell. 
+  % Description:  Removes cell from the calling cells neighbor list. 
   % Return:       Nothing.
   *****************************************************************************/
-  void removeNeighbor( MazeNode * node ) {
-    if( node == nullptr ) return;
-    if( x == node->x ) {
+  void removeNeighbor( MazeCell * cell ) {
+    if( cell == nullptr ) return;
+    if( x == cell->x ) {
       /* vertical neighbor */
-      if( y + 1 == node->y ) down = nullptr;
-      else if( y - 1 == node->y ) up = nullptr;
+      if( y + 1 == cell->y ) down = nullptr;
+      else if( y - 1 == cell->y ) up = nullptr;
     }
-    else if( y == node->y ) {
+    else if( y == cell->y ) {
       /* horizontal neighbor */
-      if( x + 1 == node->x ) right = nullptr;
-      else if( x - 1 == node->x ) left = nullptr;
+      if( x + 1 == cell->x ) right = nullptr;
+      else if( x - 1 == cell->x ) left = nullptr;
     }
     else {
-      /* node is not adjacent */
+      /* cell is not adjacent */
       #if defined( ARDUINO )
         if( Serial ) {
 	  Serial.print( REMOVE_EDGE_ERROR );
 	  Serial.print( *this );
 	  Serial.print( " <-> " );
-	  Serial.print( *node );
+	  Serial.print( *cell );
 	}
       #else
-        cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *node;
+        cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *cell;
       #endif
     }
   }
 
 protected: 
   static constexpr const char * ADD_EDGE_ERROR = 
-    "Error: attempt to add edge to a pair on non-adjacent nodes. ";
+    "Error: attempt to add edge to a pair on non-adjacent cells. ";
   static constexpr const char * REMOVE_EDGE_ERROR = 
-    "Error: attempt to remove edge to a non-adjacent node. ";
+    "Error: attempt to remove edge to a non-adjacent cell. ";
 
 };
 

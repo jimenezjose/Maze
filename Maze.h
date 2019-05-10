@@ -23,7 +23,7 @@ Description:     2D matrix data structure with an internal graph abstraction.
   #include <vector>
   #include <utility>
   #include <iterator>
-  #include "MazeNode.hpp"
+  #include "MazeCell.hpp"
 #else
   #error "board not supported." 
 #endif
@@ -33,46 +33,46 @@ using namespace std;
 class Maze {
 private:
   const int width, height;
-  vector<vector<MazeNode>> maze;
+  vector<vector<MazeCell>> maze;
 
-  /* Creates an undirected egde between the given nodes. */
-  void addEdge( MazeNode * node_A, MazeNode * node_B );
-  /* Removes an undirected egde that is between the given nodes. */
-  void removeEdge( MazeNode * node_A, MazeNode * node_B );
+  /* Creates an undirected egde between the given cells. */
+  void addEdge( MazeCell * cell_A, MazeCell * cell_B );
+  /* Removes an undirected egde that is between the given cells. */
+  void removeEdge( MazeCell * cell_A, MazeCell * cell_B );
 public:  
   /* Creates a two dimensional maze data structure. */
   Maze( int width, int height );
   /* Destructs the maze data structure */
   ~Maze();
-  /* Creates a wall between two neighbor nodes in maze. */
-  void addWall( MazeNode * node_A, MazeNode * node_B );
-  /* Removes the wall betweeb two neighbor nodes in maze. */
-  void removeWall( MazeNode * node_A, MazeNode * node_B );
-  /* Clears all internal data of node relationships in maze. */
+  /* Creates a wall between two neighbor cells in maze. */
+  void addWall( MazeCell * cell_A, MazeCell * cell_B );
+  /* Removes the wall betweeb two neighbor cells in maze. */
+  void removeWall( MazeCell * cell_A, MazeCell * cell_B );
+  /* Clears all internal data of cell relationships in maze. */
   void clear();
-  /* Clears the maze such that no walls will exist between two nodes */
+  /* Clears the maze such that no walls will exist between two cells */
   void clearWalls();
   /* Accessor method for maze internal nodal data structures. */
-  MazeNode * at( int row, int column );
-  /* Checks if there exists a wall between the given points or nodes. */
-  bool wallBetween( MazeNode * node_A, MazeNode * node_B );
+  MazeCell * at( int row, int column );
+  /* Checks if there exists a wall between the given points or cells. */
+  bool wallBetween( MazeCell * cell_A, MazeCell * cell_B );
   /* Checks if the (row, column) coordinate is not in the maze. */
   bool outOfBounds( int row, int column );
-  /* Gets all global adjacent neighbors of node in maze. */
-  vector<MazeNode *> getAdjacentCellList( MazeNode * node );
+  /* Gets all global adjacent neighbors of cell in maze. */
+  vector<MazeCell *> getAdjacentCellList( MazeCell * cell );
   /* Getter method for the width, in unit cells, of the maze. */
   int getWidth();
   /* Getter method for the height, in unit cells, of the maze. */
   int getHeight();
 
   /* Iterator class for the maze container - allowing ranging for loops */
-  class Iterator : public iterator<input_iterator_tag, MazeNode> {
+  class Iterator : public iterator<input_iterator_tag, MazeCell> {
   private:
     Maze & maze;
-    MazeNode * curr;
+    MazeCell * curr;
   public:
-    Iterator( Maze & maze, MazeNode * curr ) : maze(maze), curr(curr) {}
-    MazeNode * operator*() const;
+    Iterator( Maze & maze, MazeCell * curr ) : maze(maze), curr(curr) {}
+    MazeCell * operator*() const;
     Iterator operator++();
     Iterator operator++(int);
     bool operator==( Iterator const & other ) const;

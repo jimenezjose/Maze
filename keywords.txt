@@ -7,7 +7,7 @@
 #######################################
 
 Maze	KEYWORD1
-MazeNode	KEYWORD1
+MazeCell	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -25,7 +25,7 @@ getAdjacentCellList	KEYWORD2
 getWidth	KEYWORD2
 getHeight	KEYWORD2
 
-# MazeNode scope
+# MazeCell scope
 clearData	KEYWORD2
 setVisited	KEYWORD2
 setPrev	KEYWORD2	
