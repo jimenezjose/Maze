@@ -22,7 +22,11 @@ Download the repository to your project directory.
 | `Maze::clear()` | Clears all internal data of node relationships in maze. |
 | `Maze::clearWalls()` | Clears the maze such that no walls will exist between two nodes |
 | `Maze::at()` | Accessor method for maze internal nodal data structures. |
-| `Maze:: wallBetween( MazeNode * node_A, MazeNode * node_B );` | Checks if there exists a wall between the given points or nodes. |
+| `Maze::wallBetween( MazeNode * node_A, MazeNode * node_B )` | Checks if there exists a wall between the given nodes. |
+| `Maze::outOfBounds( int row, int column )` | Checks if the (row, column) coordinate is not in the maze. |
+| `Maze::getAdjacentCellList( MazeNode * node )` | Gets all global adjacent neighbors of node in maze. |
+| `Maze::getWidth()` | Getter method for the width, in unit cells, of the maze. |
+| `Maze::getHeight()` | Getter method for the height, in unit cells, of the maze. |
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
