@@ -17,7 +17,7 @@ Download the repository as normal.
 int index = 0; 
 ```
 
-`int index = 0;`
+`int index = 0;```c++```
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
