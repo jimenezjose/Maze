@@ -9,13 +9,9 @@ Download the repository as normal.
 
 # 
 
-| Functions     | Summary       | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-
-```c++
-int index = 0; 
-```
+| Functions     | Summary       | 
+| ------------- |:-------------:| 
+| col 3 is      | right-aligned | 
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
