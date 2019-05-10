@@ -17,8 +17,8 @@ Download the repository to your project directory.
 
 | Functions | Summary| 
 | ------------------  |:--------------------------------------------------------:| 
-| Maze::addWall()    | Creates a wall between two neighboring cells in the maze. | 
-| Maze::removeWall() | Removes the wall betweeb two neighbor nodes in maze. |
+| `Maze::addWall()`    | Creates a wall between two neighboring cells in the maze. | 
+| `Maze::removeWall()` | Removes the wall betweeb two neighbor nodes in maze. |
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
