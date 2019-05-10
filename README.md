@@ -1,5 +1,5 @@
 # Maze
-Maze Data Structure
+Two-Dimensional Maze data structure.
 
 ## Arduino Installation:
 To learn how to include the Maze library to your Arduino project click [here](https://www.arduino.cc/en/guide/libraries#toc4). 
@@ -7,7 +7,7 @@ To learn how to include the Maze library to your Arduino project click [here](ht
 ## C++ Library Installation:
 Download the repository as normal.
 
-#
+# 
 
 | Functions     | Summary       | Cool  |
 | ------------- |:-------------:| -----:|
@@ -16,8 +16,6 @@ Download the repository as normal.
 ```c++
 int index = 0; 
 ```
-
-`int index = 0;```c++```
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
