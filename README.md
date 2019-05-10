@@ -15,9 +15,9 @@ Download the repository to your project directory.
 
 # Member Functions
 
-| Functions     | Summary       | 
-| ------------- |:-------------:| 
-| col 3 is      | right-aligned | 
+| Functions       | Summary       | 
+| --------------- |:--------------:| 
+| Maze::addWall() | right-aligned | 
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
