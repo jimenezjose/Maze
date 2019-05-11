@@ -24,41 +24,40 @@ class MazeCell {
 public:
   friend class Maze;
   /* cell location in Maze */
-  const int row, y;
-  const int column, x;
+  const int row;
+  const int column;
   /* children */
   MazeCell * up    = nullptr;
   MazeCell * down  = nullptr;
   MazeCell * left  = nullptr;
   MazeCell * right = nullptr;
   /* path optimization attributes for diagonal directions */
-  const double diagonal_x;
-  const double diagonal_y;
+  const double diagonal_row;
+  const double diagonal_column;
   /* graph traversal/search data */
   MazeCell * prev = nullptr;
   int distance = 0;
   bool visited = false;
 
-  /**************************************************************************
+  /*****************************************************************************
   % Constructor:  MazeCell 
   % File:         MazeCell.hpp
   % Parameters:   row    - row that the cell belongs to in maze.
   %               column - column that the cell belongs to in maze. 
   % Description:  Creates a cell object for an associated cell in a 2D maze. 
-  **************************************************************************/
-  MazeCell( double row, double column ) : row( (int)row ), column( (int)column ), 
-    diagonal_x( column ), diagonal_y( row ), y( (int)row ), x( (int)column ) {}
+  ******************************************************************************/
+  MazeCell( double row, double column ) : row( (int)row ), column( (int)column ),
+    diagonal_row( row ), diagonal_column( column ) {}
 
-  /**************************************************************************
+  /*****************************************************************************
   % Constructor:  MazeCell 
   % File:         MazeCell.hpp
   % Parameters:   row    - row that the cell belongs to in maze.
   %               column - column that the cell belongs to in maze. 
   % Description:  Creates a cell object for an associated cell in a 2D maze. 
-  **************************************************************************/
+  ******************************************************************************/
   MazeCell( const MazeCell & cell ) : row( cell.row ), column( cell.column ), 
-    diagonal_x( cell.diagonal_x ), diagonal_y( cell.diagonal_y ), 
-    y( cell.row ), x( cell.column ) {}
+    diagonal_row( cell.diagonal_row ), diagonal_column( cell.diagonal_column ) {}
 
   /*****************************************************************************
   % Routine Name:  clearData
@@ -159,30 +158,6 @@ public:
   }
 
   /*****************************************************************************
-  % Routine Name: getDiagonalX
-  % File:         MazeCell.hpp
-  % Parameters:   None.
-  % Description:  Getter for attribute diagonal_x. diagonal_x is used for path 
-  %               optimization and it allows "half-steps" in the x-axis.
-  % Return:       Double value of the attribute diagonal_x. 
-  *****************************************************************************/
-  double getDiagonalX() {
-    return diagonal_x;
-  }
-
-  /*****************************************************************************
-  % Routine Name: getDiagonalY
-  % File:         MazeCell.hpp
-  % Parameters:   None.
-  % Description:  Getter for attribute diagona_y, which is used for diagonal 
-  %               directions while traversing the  maze.
-  % Return:       A floating point y-coordinate.
-  *****************************************************************************/
-  double getDiagonalY() {
-    return diagonal_y;
-  }
-
-  /*****************************************************************************
   % Routine Name: operator ==
   % File:         MazeCell.hpp
   % Parameters:   cell - cell that will be compared with the calling cell.
@@ -190,7 +165,7 @@ public:
   % Return:       True if and only if cell is equivaluent to the calling cell.
   *****************************************************************************/
   bool operator==( const MazeCell & cell ) {
-    return ( x == cell.x && y == cell.y );
+    return ( row == cell.row && column == cell.column );
   }
 
   /*****************************************************************************
@@ -241,15 +216,15 @@ private:
   *****************************************************************************/
   void addNeighbor( MazeCell * cell ) {
     if( cell == nullptr ) return;
-    if( x == cell->x ) {
+    if( column == cell->column ) {
       /* computer y-axis is inverted */
-      if( y + 1 == cell->y ) down = cell;
-      else if( y - 1 == cell->y ) up = cell;
+      if( row + 1 == cell->row ) down = cell;
+      else if( row - 1 == cell->row ) up = cell;
     }
-    else if( y == cell->y ) {
+    else if( row == cell->row ) {
       /* normal x-axis convention */
-      if( x + 1 == cell->x ) right = cell;
-      else if( x - 1 == cell->x ) left = cell;
+      if( column + 1 == cell->column ) right = cell;
+      else if( column - 1 == cell->column ) left = cell;
     }
     else {
       /* cell is not adjacent */
@@ -275,15 +250,15 @@ private:
   *****************************************************************************/
   void removeNeighbor( MazeCell * cell ) {
     if( cell == nullptr ) return;
-    if( x == cell->x ) {
+    if( column == cell->column ) {
       /* vertical neighbor */
-      if( y + 1 == cell->y ) down = nullptr;
-      else if( y - 1 == cell->y ) up = nullptr;
+      if( row + 1 == cell->row ) down = nullptr;
+      else if( row - 1 == cell->row ) up = nullptr;
     }
-    else if( y == cell->y ) {
+    else if( row == cell->row ) {
       /* horizontal neighbor */
-      if( x + 1 == cell->x ) right = nullptr;
-      else if( x - 1 == cell->x ) left = nullptr;
+      if( column + 1 == cell->column ) right = nullptr;
+      else if( column - 1 == cell->column ) left = nullptr;
     }
     else {
       /* cell is not adjacent */
