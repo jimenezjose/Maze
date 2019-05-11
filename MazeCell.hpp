@@ -217,7 +217,7 @@ private:
   void addNeighbor( MazeCell * cell ) {
     if( cell == nullptr ) return;
     if( column == cell->column ) {
-      /* computer y-axis is inverted */
+      /* vertical devaited neighbor */
       if( row + 1 == cell->row ) down = cell;
       else if( row - 1 == cell->row ) up = cell;
     }
