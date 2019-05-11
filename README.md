@@ -13,20 +13,5 @@ Download the repository to your project directory.
 #include "Maze-master/Maze.h"
 ```
 
-# Maze Member Functions:
-
-| Functions | Description| 
-| -------------------  |:--------------------:| 
-| `Maze::addWall()`    |    | 
-| `Maze::removeWall()` |  |
-| `Maze::clear()` |  |
-| `Maze::clearWalls()` |  |
-| `Maze::at()` |  |
-| `Maze::wallBetween( MazeCell * cell_A, MazeCell * cell_B )` |  |
-| `Maze::outOfBounds( int row, int column )` |  |
-| `Maze::getAdjacentCellList( MazeCell * cell )` |  |
-| `Maze::getWidth()` |  |
-| `Maze::getHeight()` |  |
-
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
