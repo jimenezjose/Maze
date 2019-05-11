@@ -59,6 +59,7 @@ public:
   MazeCell( const MazeCell & cell ) : row( cell.row ), column( cell.column ), 
     diagonal_x( cell.diagonal_x ), diagonal_y( cell.diagonal_y ), 
     y( cell.row ), x( cell.column ) {}
+
   /*****************************************************************************
   % Routine Name:  clearData
   % File:          MazeCell.hpp
@@ -266,7 +267,7 @@ private:
   }
 
   /*****************************************************************************
-  % Routine Name: removeNode
+  % Routine Name: removeNeighbor
   % File:         MazeCell.hpp
   % Parameters:   cell - an adjacent cell in the maze from the calling cell. 
   % Description:  Removes cell from the calling cells neighbor list. 
@@ -304,7 +305,6 @@ protected:
     "Error: attempt to add edge to a pair on non-adjacent cells. ";
   static constexpr const char * REMOVE_EDGE_ERROR = 
     "Error: attempt to remove edge to a non-adjacent cell. ";
-
 };
 
 #endif
