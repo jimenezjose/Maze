@@ -16,7 +16,7 @@ Download the repository to your project directory.
 # Maze Member Functions:
 
 | Functions | Description| 
-| -------------------  |:-----------------------------------------------------------:| 
+| -------------------  |:--------------------:| 
 | `Maze::addWall()`    |    | 
 | `Maze::removeWall()` |  |
 | `Maze::clear()` |  |
