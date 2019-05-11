@@ -88,15 +88,15 @@ void Maze::removeEdge( MazeCell * cell_A, MazeCell * cell_B ) {
 void Maze::clearWalls() {
   for( int row = 0; row < getHeight(); row++ ) {
     for( int column = 0; column < getWidth(); column++ ) {
-      MazeCell * currentNode = at(row, column);
+      MazeCell * currentCell = at(row, column);
 
       if( !outOfBounds(row + 1, column) ) {
 	/* vertical deviation downwards */
-	removeWall( currentNode, at(row + 1, column) );
+	removeWall( currentCell, at(row + 1, column) );
       }
       if( !outOfBounds(row, column + 1) ) {
 	/* horizontal deviation to the right */
-	removeWall( currentNode, at(row, column + 1) );
+	removeWall( currentCell, at(row, column + 1) );
       }
     }
   }
