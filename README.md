@@ -13,5 +13,7 @@ Download the repository to your project directory.
 #include "Maze-master/Maze.h"
 ```
 
+## Library Overview:
+
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
