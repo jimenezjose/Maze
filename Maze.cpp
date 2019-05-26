@@ -145,10 +145,21 @@ void Maze::clear() {
 /*****************************************************************************
 % Routine Name: at
 % File:         Maze.cpp
+% Parameters:   coordinate - pair of integers (row, col). 
+% Description:  Accessor method for maze internal nodal data structures.
+% Return:       MazeCell pointer at (row, col) position in 2-dimensional maze.
+*****************************************************************************/
+MazeCell * Maze::at( pair<int, int> & coordinate ) {
+  at( coordinate.first, coordinate.second );
+}
+
+/*****************************************************************************
+% Routine Name: at
+% File:         Maze.cpp
 % Parameters:   row    - row of cell in maze
 %               column - column of cell in maze
 % Description:  Accessor method for maze internal nodal data structures.
-% Return:       MazeCell pointer at (x, y) position in two-dimensional maze. 
+% Return:       MazeCell pointer at (row, col) position in 2-dimensional maze. 
 *****************************************************************************/
 MazeCell * Maze::at( int row, int column ) {
   if( outOfBounds(row, column) ) {

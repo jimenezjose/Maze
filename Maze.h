@@ -54,6 +54,7 @@ public:
   void clearWalls();
   /* Accessor method for maze internal nodal data structures. */
   MazeCell * at( int row, int column );
+  MazeCell * at( pair<int, int> & coordinate );
   /* Checks if there exists a wall between the given points or cells. */
   bool wallBetween( MazeCell * cell_A, MazeCell * cell_B );
   /* Checks if the (row, column) coordinate is not in the maze. */
