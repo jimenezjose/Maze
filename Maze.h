@@ -28,6 +28,7 @@ Description:     2D matrix data structure with an internal graph abstraction.
   #error "board not supported." 
 #endif
 
+
 using namespace std;
 
 class Maze {
@@ -81,6 +82,10 @@ public:
 
   Maze::Iterator begin() { return Maze::Iterator( *this, at(0, 0) ); }
   Maze::Iterator end() { return Maze::Iterator( *this, nullptr ); }
-
 };
+
+#ifndef ARDUINO
+  #include "Maze.cpp"
 #endif
+
+#endif /* MAZE_H */
