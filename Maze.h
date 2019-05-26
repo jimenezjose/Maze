@@ -33,14 +33,13 @@ using namespace std;
 
 class Maze {
 private:
-  const int width, height;
   vector<vector<MazeCell>> maze;
-
   /* Creates an undirected egde between the given cells. */
   void addEdge( MazeCell * cell_A, MazeCell * cell_B );
   /* Removes an undirected egde that is between the given cells. */
   void removeEdge( MazeCell * cell_A, MazeCell * cell_B );
 public:  
+  const int width, height;
   /* Creates a two dimensional maze data structure. */
   Maze( int width, int height );
   /* Destructs the maze data structure */
