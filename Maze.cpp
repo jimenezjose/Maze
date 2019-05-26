@@ -150,7 +150,7 @@ void Maze::clear() {
 % Return:       MazeCell pointer at (row, col) position in 2-dimensional maze.
 *****************************************************************************/
 MazeCell * Maze::at( pair<int, int> & coordinate ) {
-  at( coordinate.first, coordinate.second );
+  return at( coordinate.first, coordinate.second );
 }
 
 /*****************************************************************************
