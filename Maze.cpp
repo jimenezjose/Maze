@@ -143,6 +143,72 @@ void Maze::clear() {
 }
 
 /*****************************************************************************
+% Routine Name: draw
+% File:         Maze.cpp
+% Parameters:   None.
+% Description:  Draws the current state of the maze. 
+% Return:       Nothing.
+*****************************************************************************/
+void Maze::draw() {
+  cout << maze.getHeight() << " x " << maze.getWidth() << " Maze:" << endl;
+
+  /* draw column indices */
+  cout << "    ";
+  for( int column = 0; column < maze.getWidth(); column++ ) {
+    cout << column << " ";
+  } 
+  cout << endl;
+ 
+  /* draw top-most walls of maze */
+  cout << "    ";
+  for( int column = 0; column < maze.getWidth(); column++ ) {
+    cout << "_ "; 
+  } 
+  cout << endl;
+ 
+  /* draw right and bottom walls in maze */
+  for( int row = 0; row < maze.getHeight(); row++ ) {
+    cout << row << "  |"; 
+    for( int column = 0; column < maze.getWidth(); column++ ) {
+      MazeCell * currentCell = maze.at( row, column );
+      MazeCell * rightCell   = maze.at( row, column + 1 );
+      MazeCell * downCell    = maze.at( row + 1, column ); 
+      bool bottom_wall_exists = maze.wallBetween(currentCell, downCell);
+      bool right_wall_exists  = maze.wallBetween(currentCell, rightCell);
+
+      if( row < maze.getHeight() - 1 && botom_wall_exists  ) {
+        /* bottom-wall exists */
+        cout << "_";
+      } 
+      else if( row < maze.getHeight() - 1 ) {
+        /* bottom-wall is absent */
+        cout << " "; 
+      } 
+      
+      if( row == maze.getHeight() - 1 ) {
+        /* botton of maze */
+        cout << "_";
+      } 
+      
+      if( column < maze.getWidth() - 1 && right_wall_exists ) {
+        /* right-wall exists */
+        cout << "|";
+      } 
+      else if( column < maze.getWidth() - 1 ) {
+        /* right-wall is absent */
+        cout << " ";
+      } 
+      
+      if( column == maze.getWidth() - 1  ) {
+        /* right-end of maze */
+        cout << "|";
+      } 
+    }
+    cout << endl;
+  }
+}
+
+/*****************************************************************************
 % Routine Name: at
 % File:         Maze.cpp
 % Parameters:   coordinate - pair of integers (row, col). 
@@ -169,7 +235,7 @@ MazeCell * Maze::at( int row, int column ) {
 }
 
 /*****************************************************************************
-% Routine Name: at
+% Routine Name: wallBetween
 % File:         Maze.cpp
 % Parameters:   cell_A - cell from maze of interest.
 %               cell_B - cell from maze of interest.

@@ -52,6 +52,8 @@ public:
   void clear();
   /* Clears the maze such that no walls will exist between two cells */
   void clearWalls();
+  /* draws the current state of the maze */
+  void draw();
   /* overloaded - delgates to at(row, column) */
   MazeCell * at( pair<int, int> & coordinate );
   /* Accessor method for maze internal nodal data structures. */
