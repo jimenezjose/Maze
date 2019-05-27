@@ -150,56 +150,56 @@ void Maze::clear() {
 % Return:       Nothing.
 *****************************************************************************/
 void Maze::draw() {
-  cout << maze.getHeight() << " x " << maze.getWidth() << " Maze:" << endl;
+  cout << getHeight() << " x " << getWidth() << " Maze:" << endl;
 
   /* draw column indices */
   cout << "    ";
-  for( int column = 0; column < maze.getWidth(); column++ ) {
+  for( int column = 0; column < getWidth(); column++ ) {
     cout << column << " ";
   } 
   cout << endl;
  
   /* draw top-most walls of maze */
   cout << "    ";
-  for( int column = 0; column < maze.getWidth(); column++ ) {
+  for( int column = 0; column < getWidth(); column++ ) {
     cout << "_ "; 
   } 
   cout << endl;
  
   /* draw right and bottom walls in maze */
-  for( int row = 0; row < maze.getHeight(); row++ ) {
+  for( int row = 0; row < getHeight(); row++ ) {
     cout << row << "  |"; 
-    for( int column = 0; column < maze.getWidth(); column++ ) {
-      MazeCell * currentCell = maze.at( row, column );
-      MazeCell * rightCell   = maze.at( row, column + 1 );
-      MazeCell * downCell    = maze.at( row + 1, column ); 
-      bool bottom_wall_exists = maze.wallBetween(currentCell, downCell);
-      bool right_wall_exists  = maze.wallBetween(currentCell, rightCell);
+    for( int column = 0; column < getWidth(); column++ ) {
+      MazeCell * currentCell = at( row, column );
+      MazeCell * rightCell   = at( row, column + 1 );
+      MazeCell * downCell    = at( row + 1, column ); 
+      bool bottom_wall_exists = wallBetween(currentCell, downCell);
+      bool right_wall_exists  = wallBetween(currentCell, rightCell);
 
-      if( row < maze.getHeight() - 1 && botom_wall_exists  ) {
-        /* bottom-wall exists */
+      if( row < getHeight() - 1 && bottom_wall_exists  ) {
+        /* bottom-wall character */
         cout << "_";
       } 
-      else if( row < maze.getHeight() - 1 ) {
+      else if( row < getHeight() - 1 ) {
         /* bottom-wall is absent */
         cout << " "; 
       } 
       
-      if( row == maze.getHeight() - 1 ) {
+      if( row == getHeight() - 1 ) {
         /* botton of maze */
         cout << "_";
       } 
       
-      if( column < maze.getWidth() - 1 && right_wall_exists ) {
-        /* right-wall exists */
+      if( column < getWidth() - 1 && right_wall_exists ) {
+        /* right-wall character */
         cout << "|";
       } 
-      else if( column < maze.getWidth() - 1 ) {
+      else if( column < getWidth() - 1 ) {
         /* right-wall is absent */
         cout << " ";
       } 
       
-      if( column == maze.getWidth() - 1  ) {
+      if( column == getWidth() - 1  ) {
         /* right-end of maze */
         cout << "|";
       } 
