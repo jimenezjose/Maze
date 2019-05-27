@@ -76,7 +76,7 @@ public:
   /* c string representation of the maze */
   operator const char *();
   /* implicit call to output the string representation of the maze */
-  friend ostream & operator<<( ostream & os, const Maze & maze );
+  friend ostream & operator<<( ostream & os, Maze & maze );
   /* Iterator class for the maze container - allowing ranging for loops */
   class Iterator : public iterator<input_iterator_tag, MazeCell> {
   private:

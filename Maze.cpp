@@ -350,7 +350,6 @@ stack<string> verticallyStackedRange( int min, int max ) {
     int prev_base = pow( base, exponent - 1 );
     int curr_base = pow( base, exponent );
     column_print_done = true;
-    cerr << curr_base << endl;
 
     for( int column = min; column < max; column++ ) {
       int remainder = column % curr_base;
@@ -373,7 +372,6 @@ stack<string> verticallyStackedRange( int min, int max ) {
       }
       ss << " ";
     }
-    cerr << ss.str() << endl;
     stak.push( ss.str() );
     ss.str("");
     exponent++;
@@ -391,7 +389,8 @@ stack<string> verticallyStackedRange( int min, int max ) {
 % Description:  Overloads the << operator to draw the given state of the maze. 
 % Return:       A reference to the passed output stream.
 *****************************************************************************/
-ostream & operator<<( ostream & os, const Maze & maze ) {
+ostream & operator<<( ostream & os, Maze & maze ) {
+  os << (const char *) maze;
   return os;
 }
 
