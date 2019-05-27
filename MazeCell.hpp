@@ -189,8 +189,8 @@ public:
   % Return:       STring representation of calling cell. 
   *****************************************************************************/
   operator const char *() {
-    string cell_info = "(" + to_string(row) + ", " + to_string(column) + ")";
-    return cell_info.c_str();
+    cell_str = "(" + to_string(row) + ", " + to_string(column) + ")";
+    return cell_str.c_str();
   }
 
   /*****************************************************************************
@@ -207,6 +207,8 @@ public:
   }
 
 private:
+  string cell_str;
+
   /*****************************************************************************
   % Routine Name: addNeighbor
   % File:         MazeCell.hpp

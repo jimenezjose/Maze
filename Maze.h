@@ -20,9 +20,13 @@ Description:     2D matrix data structure with an internal graph abstraction.
 /* stm32 architecture or non arduino */
 #if defined( ARDUINO_ARCH_STM32 ) || !defined( ARDUINO )
   #include <iostream>
+  #include <sstream>
+  #include <string>
+  #include <stack>
   #include <vector>
   #include <utility>
   #include <iterator>
+  #include <cmath>
   #include "MazeCell.hpp"
 #else
   #error "board not supported." 
@@ -34,6 +38,7 @@ using namespace std;
 class Maze {
 private:
   vector<vector<MazeCell>> maze;
+  string maze_str;
   /* Creates an undirected egde between the given cells. */
   void addEdge( MazeCell * cell_A, MazeCell * cell_B );
   /* Removes an undirected egde that is between the given cells. */
@@ -68,7 +73,10 @@ public:
   int getWidth();
   /* Getter method for the height, in unit cells, of the maze. */
   int getHeight();
-
+  /* c string representation of the maze */
+  operator const char *();
+  /* implicit call to output the string representation of the maze */
+  friend ostream & operator<<( ostream & os, const Maze & maze );
   /* Iterator class for the maze container - allowing ranging for loops */
   class Iterator : public iterator<input_iterator_tag, MazeCell> {
   private:

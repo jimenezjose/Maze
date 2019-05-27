@@ -14,6 +14,9 @@ Description:     2D matrix data structure with an internal graph abstraction.
 
 using namespace std;
 
+/* helper methods - function prototypes */
+stack<string> verticallyStackedRange( int min, int max );
+
 /*****************************************************************************
 % Constructor: Maze
 % File:        Maze.cpp
@@ -143,72 +146,6 @@ void Maze::clear() {
 }
 
 /*****************************************************************************
-% Routine Name: draw
-% File:         Maze.cpp
-% Parameters:   None.
-% Description:  Draws the current state of the maze. 
-% Return:       Nothing.
-*****************************************************************************/
-void Maze::draw() {
-  cout << getHeight() << " x " << getWidth() << " Maze:" << endl;
-
-  /* draw column indices */
-  cout << "    ";
-  for( int column = 0; column < getWidth(); column++ ) {
-    cout << column << " ";
-  } 
-  cout << endl;
- 
-  /* draw top-most walls of maze */
-  cout << "    ";
-  for( int column = 0; column < getWidth(); column++ ) {
-    cout << "_ "; 
-  } 
-  cout << endl;
- 
-  /* draw right and bottom walls in maze */
-  for( int row = 0; row < getHeight(); row++ ) {
-    cout << row << "  |"; 
-    for( int column = 0; column < getWidth(); column++ ) {
-      MazeCell * currentCell = at( row, column );
-      MazeCell * rightCell   = at( row, column + 1 );
-      MazeCell * downCell    = at( row + 1, column ); 
-      bool bottom_wall_exists = wallBetween(currentCell, downCell);
-      bool right_wall_exists  = wallBetween(currentCell, rightCell);
-
-      if( row < getHeight() - 1 && bottom_wall_exists  ) {
-        /* bottom-wall character */
-        cout << "_";
-      } 
-      else if( row < getHeight() - 1 ) {
-        /* bottom-wall is absent */
-        cout << " "; 
-      } 
-      
-      if( row == getHeight() - 1 ) {
-        /* botton of maze */
-        cout << "_";
-      } 
-      
-      if( column < getWidth() - 1 && right_wall_exists ) {
-        /* right-wall character */
-        cout << "|";
-      } 
-      else if( column < getWidth() - 1 ) {
-        /* right-wall is absent */
-        cout << " ";
-      } 
-      
-      if( column == getWidth() - 1  ) {
-        /* right-end of maze */
-        cout << "|";
-      } 
-    }
-    cout << endl;
-  }
-}
-
-/*****************************************************************************
 % Routine Name: at
 % File:         Maze.cpp
 % Parameters:   coordinate - pair of integers (row, col). 
@@ -315,6 +252,147 @@ int Maze::getWidth() {
 *****************************************************************************/
 int Maze::getHeight() {
   return height;
+}
+
+/*****************************************************************************
+% Routine Name: operator (const char *) 
+% File:         Maze.cpp
+% Parameters:   None.
+% Description:  Casts the maze to a c string representation. 
+% Return:       A c string representation of the state of the maze.
+*****************************************************************************/
+Maze::operator const char *() {
+  ostringstream ss;
+
+  /* draw column indices - vertically */
+  stack<string> indices_stack = verticallyStackedRange( 0, getWidth() );
+  while( !indices_stack.empty() ) {
+    ss << " \t " << indices_stack.top() << endl;
+    indices_stack.pop();
+  }
+
+  /* draw top-most walls of maze */
+  ss << " \t ";
+  for( int column = 0; column < getWidth(); column++ ) {
+    ss << "_ ";
+  }
+  ss << endl;
+
+  /* draw right and bottom walls in maze */
+  for( int row = 0; row < getHeight(); row++ ) {
+    ss << row << "\t|";
+    for( int column = 0; column < getWidth(); column++ ) {
+      MazeCell * currentCell = at( row, column );
+      MazeCell * rightCell   = at( row, column + 1 );
+      MazeCell * downCell    = at( row + 1, column );
+      bool bottom_wall_exists = wallBetween(currentCell, downCell);
+      bool right_wall_exists  = wallBetween(currentCell, rightCell);
+
+      if( row < getHeight() - 1 && bottom_wall_exists  ) {
+        /* bottom-wall character */
+        ss << "_";
+      }
+      else if( row < getHeight() - 1 ) {
+        /* bottom-wall is absent */
+        ss << " ";
+      }
+
+      if( row == getHeight() - 1 ) {
+        /* botton of maze */
+        ss << "_";
+      }
+
+      if( column < getWidth() - 1 && right_wall_exists ) {
+        /* right-wall character */
+        ss << "|";
+      }
+      else if( column < getWidth() - 1 ) {
+        /* right-wall is absent */
+        ss << " ";
+      }
+
+      if( column == getWidth() - 1  ) {
+        /* right-end of maze */
+        ss << "|";
+      }
+    }
+    ss << endl;
+  }
+
+  maze_str = ss.str();
+  return maze_str.c_str(); 
+}
+
+/*****************************************************************************
+% Routine Name: verticallyStackedRange 
+% File:         Maze.cpp
+% Parameters:   min - smallest integer in the range. 
+%               max - largest integer in the range.
+% Description:  Given the range [min, max] this function will return stack of
+%               strings that represent columns of the vertically stacked 
+%               integers.
+% Example:      min = 0, max = 15:
+%                                   1 1 1 1 1 1
+%               0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5
+% Return:       A stack of strings for every row of the vertically aligned 
+%               integers.
+*****************************************************************************/
+stack<string> verticallyStackedRange( int min, int max ) {
+  if( min > max ) return stack<string>();
+
+  stack<string> stak;
+  bool column_print_done = false;
+  int base = 10;
+  int exponent = 1;
+  ostringstream ss;
+
+  while( !column_print_done ) {
+    int prev_base = pow( base, exponent - 1 );
+    int curr_base = pow( base, exponent );
+    column_print_done = true;
+    cerr << curr_base << endl;
+
+    for( int column = min; column < max; column++ ) {
+      int remainder = column % curr_base;
+
+      if( column == 0 ) {
+        /* special case for all evenly divisible 0 */
+	if( prev_base == 1 ) ss << "0 ";
+	else ss << "  ";
+	continue;
+      }
+      
+      if( column / prev_base == 0 && column % curr_base != 0  ) {
+        /* skip - for no leading zeros */
+        ss <<  " ";
+      }
+      else {
+        /* append single digit remainer */
+        ss << remainder / prev_base;
+        column_print_done = false;
+      }
+      ss << " ";
+    }
+    cerr << ss.str() << endl;
+    stak.push( ss.str() );
+    ss.str("");
+    exponent++;
+  }
+
+  return stak;
+}
+
+
+/*****************************************************************************
+% Routine Name: operator<< 
+% File:         Maze.cpp
+% Parameters:   os   - output stream reference.
+%               maze - reference to maze of interest.
+% Description:  Overloads the << operator to draw the given state of the maze. 
+% Return:       A reference to the passed output stream.
+*****************************************************************************/
+ostream & operator<<( ostream & os, const Maze & maze ) {
+  return os;
 }
 
 /*****************************************************************************
