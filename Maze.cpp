@@ -24,7 +24,7 @@ using namespace std;
 Maze::Maze( int width, int height ) : width( width ), height( height ) {
   if( width < 0 || height < 0 ) {
     #if defined( ARDUINO )
-      width = height = 1;
+      width = height = 0;
     #else
       throw std::length_error("Maze");
     #endif
@@ -163,14 +163,7 @@ MazeCell * Maze::at( pair<int, int> & coordinate ) {
 *****************************************************************************/
 MazeCell * Maze::at( int row, int column ) {
   if( outOfBounds(row, column) ) {
-    #if defined( ARDUINO )
-      if( Serial ) {
-        Serial.println( "Maze::at() out of range. Defaulting to (0, 0)");
-      }
-      row = column = 0;
-    #else
-      throw std::out_of_range("Maze");
-    #endif
+    return nullptr;
   }
   return &maze[ row ][ column ];
 }
