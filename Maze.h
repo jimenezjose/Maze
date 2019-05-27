@@ -52,10 +52,10 @@ public:
   void clear();
   /* Clears the maze such that no walls will exist between two cells */
   void clearWalls();
-  /* Accessor method for maze internal nodal data structures. */
-  MazeCell * at( int row, int column );
   /* overloaded - delgates to at(row, column) */
   MazeCell * at( pair<int, int> & coordinate );
+  /* Accessor method for maze internal nodal data structures. */
+  MazeCell * at( int row, int column );
   /* Checks if there exists a wall between the given points or cells. */
   bool wallBetween( MazeCell * cell_A, MazeCell * cell_B );
   /* Checks if the (row, column) coordinate is not in the maze. */

@@ -169,6 +169,28 @@ MazeCell * Maze::at( int row, int column ) {
 }
 
 /*****************************************************************************
+% Routine Name: at
+% File:         Maze.cpp
+% Parameters:   cell_A - cell from maze of interest.
+%               cell_B - cell from maze of interest.
+% Description:  Evaluates if a wall exists between two nodes in the maze.
+% Return:       true if there exisits a wall between the cell-pair.
+*****************************************************************************/
+bool Maze::wallBetween( MazeCell * cell_A, MazeCell * cell_B ) {
+  if( cell_A == nullptr || cell_B == nullptr ) return false;
+
+  vector<MazeCell *> neighbors_of_A = cell_A->getNeighborList();
+
+  for( MazeCell * neighbor : neighbors_of_A ) {
+    if( neighbor == cell_B ) {
+      /* There is a path directly connect A and B, therefore no wall */
+      return false;
+    }
+  }
+  return true;
+}
+
+/*****************************************************************************
 % Routine Name: outOfBounds
 % File:         Maze.cpp
 % Parameters:   row    - vertical deviated position of interest.
