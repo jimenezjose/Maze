@@ -12,7 +12,7 @@ Description:     2D matrix data structure with an internal graph abstraction.
 *******************************************************************************/
 #include "Maze.h"
 
-using namespace std;
+namespace std {
 
 /* helper methods - function prototypes */
 stack<string> verticallyStackedRange( int min, int max );
@@ -472,3 +472,5 @@ bool Maze::Iterator::operator==( Maze::Iterator const & other ) const {
 bool Maze::Iterator::operator!=( Maze::Iterator const & other ) const {
   return curr != other.curr;
 }
+
+} /* namespace std */
