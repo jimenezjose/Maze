@@ -357,7 +357,7 @@ MazeCell * Maze::Iterator::operator*() const {
 %               successor cell of the maze container.
 % Return:       The calling maze iteartor.
 *******************************************************************************/
-Maze::Iterator Maze::Iterator::operator++() {
+Maze::Iterator & Maze::Iterator::operator++() {
   MazeCell * end = maze.at( maze.getHeight() - 1, maze.getWidth() - 1 );
 
   if( curr == end ) {

@@ -82,7 +82,7 @@ public:
   public:
     Iterator( Maze & maze, MazeCell * curr ) : maze(maze), curr(curr) {}
     MazeCell * operator*() const;
-    Iterator operator++();
+    Iterator & operator++();
     Iterator operator++(int);
     bool operator==( Iterator const & other ) const;
     bool operator!=( Iterator const & other ) const;
