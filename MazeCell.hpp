@@ -18,8 +18,6 @@ Description:     Cell data structure of the maze and internal vertex for the
 #include <vector>
 #include <string>
 
-namespace std {
-
 class MazeCell {
 public:
   friend class Maze;
@@ -57,7 +55,7 @@ public:
   % Description:  Creates a cell object for an associated cell in a 2D maze. 
   ******************************************************************************/
   MazeCell( const MazeCell & cell ) : row( cell.row ), column( cell.column ), 
-    diagonal_row( cell.diagonal_row ), diagonal_column( cell.diagonal_column ) {}
+    diagonal_row( cell.diagonal_row ), diagonal_column( cell.diagonal_column ){}
 
   /*****************************************************************************
   % Routine Name: addNeighbor
@@ -88,7 +86,7 @@ public:
 	  Serial.print( *cell );
 	}
       #else
-        cerr << ADD_EDGE_ERROR << *this << " <-> " << *cell;
+        std::cerr << ADD_EDGE_ERROR << *this << " <-> " << *cell;
       #endif
     }
   }
@@ -122,7 +120,7 @@ public:
 	  Serial.print( *cell );
 	}
       #else
-        cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *cell;
+        std::cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *cell;
       #endif
     }
   }
@@ -214,8 +212,8 @@ public:
   % Description:  Gets a list of the neighboring cells of the calling cell.
   % Return:       An iterable list of neighbors.
   *****************************************************************************/
-  vector<MazeCell *> getNeighborList() {
-    vector<MazeCell *> neighbor_list = vector<MazeCell *>();
+  std::vector<MazeCell *> getNeighborList() {
+    std::vector<MazeCell *> neighbor_list = std::vector<MazeCell *>();
 
     if( up != nullptr ) neighbor_list.push_back( up );
     if( right != nullptr ) neighbor_list.push_back( right );
@@ -254,10 +252,10 @@ public:
   % Parameters:   None. 
   % Description:  Overloads the type cast (const char *) to emulate implicit 
   %               string conversion of calling MazeCell. 
-  % Return:       STring representation of calling cell. 
+  % Return:       String representation of calling cell. 
   *****************************************************************************/
   operator const char *() {
-    cell_str = "(" + to_string(row) + ", " + to_string(column) + ")";
+    cell_str = "(" + std::to_string(row) + ", " + std::to_string(column) + ")";
     return cell_str.c_str();
   }
 
@@ -269,13 +267,13 @@ public:
   % Description:   Allows for implicit string conversion of cell when printing. 
   % Return:        The passed output stram object.
   *****************************************************************************/
-  friend ostream & operator<<( ostream & os, MazeCell & cell ) {
+  friend std::ostream & operator<<( std::ostream & os, MazeCell & cell ) {
     os << "(" << cell.row << ", " << cell.column << ")";
     return os;
   }
 
 private:
-  string cell_str;
+  std::string cell_str;
 
 protected: 
   static constexpr const char * ADD_EDGE_ERROR = 
@@ -283,6 +281,4 @@ protected:
   static constexpr const char * REMOVE_EDGE_ERROR = 
     "Error: attempt to remove edge to a non-adjacent cell. ";
 };
-
-} /* namespace std */
 #endif
