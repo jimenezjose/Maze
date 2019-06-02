@@ -27,6 +27,7 @@ Description:     2D matrix data structure with an internal graph abstraction.
   #include <cmath>
   #include <utility>
   #include <iterator>
+  #include <fstream>
   #include "MazeCell.hpp"
 #else
   #error "board not supported." 
@@ -36,14 +37,19 @@ class Maze {
 private:
   std::vector<std::vector<MazeCell>> maze;
   std::string maze_str;
+  std::string encoded_maze_str;
   /* Creates an undirected egde between the given cells. */
   void addEdge( MazeCell * cell_A, MazeCell * cell_B );
   /* Removes an undirected egde that is between the given cells. */
   void removeEdge( MazeCell * cell_A, MazeCell * cell_B );
+  /* build the cell's children */
+  void decodeAndBuildCell( int row, int column, std::string binary_str );
 public:  
   const int width, height;
   /* Creates a two dimensional maze data structure. */
   Maze( int width, int height );
+  /* creates maze from encoded file */
+  Maze( std::string encodedfile );
   /* Destructs the maze data structure */
   ~Maze();
   /* Creates a wall between two neighbor cells in maze. */
@@ -70,6 +76,12 @@ public:
   int getWidth();
   /* Getter method for the height, in unit cells, of the maze. */
   int getHeight();
+  /* string encoded representation of maze */
+  const char * encode();
+  /* decodes and builds the maze from decoded file */
+  void decodeAndBuildMaze( std::string encodedfile );
+  /* writes encoded maze to filename */
+  void encodeToDisk( std::string filename );
   /* c std::string representation of the maze */
   operator const char *();
   /* implicit call to output the std::string representation of the maze */

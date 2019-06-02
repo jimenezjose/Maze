@@ -14,7 +14,7 @@ Description:     2D matrix data structure with an internal graph abstraction.
 
 /* Helper Functions */
 namespace MazeHelper {
-  std::stack<std::string> verticallyStackedRange( int, int );
+  std::stack<std::string> verticallyStackedRange( int min, int max );
 }
 
 /*******************************************************************************
@@ -252,6 +252,100 @@ int Maze::getWidth() {
 *******************************************************************************/
 int Maze::getHeight() {
   return height;
+}
+
+/*******************************************************************************
+% Routine Name: encode 
+% File:         Maze.cpp
+% Parameters:   None.
+% Description:  Encoded string representation of maze.
+% Return:       Character array of encoded string.
+*******************************************************************************/
+const char * Maze::encode() {
+  std::string encoded_str = "";
+  encoded_str += std::to_string(width) + "\n";
+  encoded_str += std::to_string(height) + "\n";
+  for( int row = 0; row < height; row++ ) {
+    for( int column = 0; column < width; column++ ) {
+      MazeCell * currentCell = at(row, column);
+      encoded_str += ( currentCell->up ) ? "1" : "0";
+      encoded_str += ( currentCell->right ) ? "1" : "0";
+      encoded_str += ( currentCell->down ) ? "1" : "0";
+      encoded_str += ( currentCell->left ) ? "1" : "0";
+      encoded_str += "\n";
+    }
+  }
+  encoded_maze_str = encoded_str;
+  return encoded_maze_str.c_str();
+}
+
+/*******************************************************************************
+% Routine Name: decodeAndBuildMaze 
+% File:         Maze.cpp
+% Parameters:   encodedfile - file with encoded maze.
+% Description:  Copies the encoded maze. 
+% Return:       Nothing. 
+*******************************************************************************/
+void Maze::decodeAndBuildMaze( std::string encodedfile ) {
+  std::ifstream infile( encodedfile );
+
+  if( !infile.is_open() ) {
+    std::cerr << "Unable to open file: " << encodedfile << std::endl;
+    return;
+  }
+
+  std::string line;
+  int read_width  = ( getline(infile, line) ) ? std::stoi(line) : -1;
+  int read_height = ( getline(infile, line) ) ? std::stoi(line) : -1;
+
+  if( read_width != width || read_height != height ) {
+    std::cerr << "Incompatible dimensions read from file: aborting maze build" << std::endl;
+    return;
+  }
+
+  clearWalls();
+  for( int row = 0; row < height; row++ ) {
+    for( int column = 0; column < width; column++ ) {
+      if( getline(infile, line) ) {
+        decodeAndBuildCell( row, column, line ); 
+      }
+      else {
+        std::cerr << "reading from curropted file" << std::endl;
+      }
+    }
+  }
+  infile.close();
+}
+
+void Maze::decodeAndBuildCell( int row, int column, std::string binary_str ) {
+  const int up_index = 0;
+  const int right_index = 1;
+  const int down_index = 2;
+  const int left_index = 3;
+
+  MazeCell * currentCell = at( row, column );
+
+  if( binary_str[ right_index ] == '0' ) {
+    addWall( at(row, column), at(row, column + 1) ); 
+  }
+
+  if( binary_str[ down_index ] == '0' ) {
+    addWall( at(row, column), at(row + 1, column) );
+  }
+}
+
+/*******************************************************************************
+% Routine Name: encodeToDisk
+% File:         Maze.cpp
+% Parameters:   None.
+% Description:  Encoded string representation of maze outputted to a file.
+% Return:       Nothing.
+*******************************************************************************/
+void Maze::encodeToDisk( std::string filename ) {
+  std::ofstream out;
+  out.open (filename);
+  out << encode();
+  out.close();
 }
 
 /*******************************************************************************
