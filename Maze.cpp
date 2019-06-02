@@ -287,6 +287,7 @@ const char * Maze::encode() {
 % Return:       Nothing. 
 *******************************************************************************/
 void Maze::decodeAndBuildMaze( std::string encodedfile ) {
+  #ifndef ARDUINO
   std::ifstream infile( encodedfile );
 
   if( !infile.is_open() ) {
@@ -315,6 +316,7 @@ void Maze::decodeAndBuildMaze( std::string encodedfile ) {
     }
   }
   infile.close();
+  #endif
 }
 
 void Maze::decodeAndBuildCell( int row, int column, std::string binary_str ) {
@@ -342,10 +344,12 @@ void Maze::decodeAndBuildCell( int row, int column, std::string binary_str ) {
 % Return:       Nothing.
 *******************************************************************************/
 void Maze::encodeToDisk( std::string filename ) {
+  #ifndef ARDUINO
   std::ofstream out;
   out.open (filename);
   out << encode();
   out.close();
+  #endif
 }
 
 /*******************************************************************************
