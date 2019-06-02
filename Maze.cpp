@@ -361,26 +361,26 @@ void Maze::encodeToDisk( std::string filename ) {
 *******************************************************************************/
 Maze::operator const char *() {
   std::stack<std::string> indices_stack;
-  std::ostringstream ss;
+  maze_str = "";
 
   /* draw column indices - vertically */
   indices_stack = MazeHelper::verticallyStackedRange( 0, getWidth() );
-
+  
   while( !indices_stack.empty() ) {
-    ss << " \t " << indices_stack.top() << std::endl;
+    maze_str += " \t " + indices_stack.top() + "\n";
     indices_stack.pop();
   }
 
   /* draw top-most walls of maze */
-  ss << " \t ";
+  maze_str += " \t ";
   for( int column = 0; column < getWidth(); column++ ) {
-    ss << "_ ";
+    maze_str += "_ ";
   }
-  ss << std::endl;
+  maze_str += "\n";
 
   /* draw right and bottom walls in maze */
   for( int row = 0; row < getHeight(); row++ ) {
-    ss << row << "\t|";
+    maze_str += std::to_string(row) + "\t|";
     for( int column = 0; column < getWidth(); column++ ) {
       MazeCell * currentCell = at( row, column );
       MazeCell * rightCell   = at( row, column + 1 );
@@ -390,36 +390,35 @@ Maze::operator const char *() {
 
       if( row < getHeight() - 1 && bottom_wall_exists  ) {
         /* bottom-wall character */
-        ss << "_";
+        maze_str += "_";
       }
       else if( row < getHeight() - 1 ) {
         /* bottom-wall is absent */
-        ss << " ";
+        maze_str += " ";
       }
 
       if( row == getHeight() - 1 ) {
         /* botton of maze */
-        ss << "_";
+        maze_str += "_";
       }
 
       if( column < getWidth() - 1 && right_wall_exists ) {
         /* right-wall character */
-        ss << "|";
+        maze_str += "|";
       }
       else if( column < getWidth() - 1 ) {
         /* right-wall is absent */
-        ss << " ";
+        maze_str += " ";
       }
 
       if( column == getWidth() - 1  ) {
         /* right-end of maze */
-        ss << "|";
+        maze_str += "|";
       }
     }
-    ss << std::endl;
+    maze_str += "\n";
   }
 
-  maze_str = ss.str();
   return maze_str.c_str(); 
 }
 
@@ -537,7 +536,8 @@ std::stack<std::string> MazeHelper::verticallyStackedRange( int min, int max ) {
   bool column_print_done = false;
   int base = 10;
   int exponent = 1;
-  std::ostringstream ss;
+  //std::ostringstream ss;
+  std::string str = "";
 
   while( !column_print_done ) {
     int prev_base = pow( base, exponent - 1 );
@@ -549,26 +549,26 @@ std::stack<std::string> MazeHelper::verticallyStackedRange( int min, int max ) {
 
       if( column == 0 ) {
         /* special case for all evenly divisible 0 */
-        if( prev_base == 1 ) ss << "0 ";
-        else ss << "  ";
+        if( prev_base == 1 ) str += "0 ";
+        else str += "  ";
         continue;
       }
       
       if( column / prev_base == 0 && column % curr_base != 0  ) {
         /* skip - for no leading zeros */
-        ss <<  " ";
+        str +=  " ";
       }
       else {
         /* append single digit remainer */
-        ss << remainder / prev_base;
+        str += std::to_string( remainder / prev_base );
         column_print_done = false;
       }
-      ss << " ";
+      str += " ";
     }
-    stak.push( ss.str() );
-    ss.str("");
+    stak.push( str );
+    str = ""; 
     exponent++;
   }
 
   return stak;
-}
+}  

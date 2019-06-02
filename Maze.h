@@ -22,7 +22,6 @@ Description:     2D matrix data structure with an internal graph abstraction.
   #include <iostream>
   #include <vector>
   #include <stack>
-  #include <sstream>
   #include <string>
   #include <cmath>
   #include <utility>
@@ -38,6 +37,7 @@ private:
   std::vector<std::vector<MazeCell>> maze;
   std::string maze_str;
   std::string encoded_maze_str;
+  std::string stack_row_str;
   /* Creates an undirected egde between the given cells. */
   void addEdge( MazeCell * cell_A, MazeCell * cell_B );
   /* Removes an undirected egde that is between the given cells. */
