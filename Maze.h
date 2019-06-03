@@ -37,7 +37,6 @@ private:
   std::vector<std::vector<MazeCell>> maze;
   std::string maze_str;
   std::string encoded_maze_str;
-  std::string stack_row_str;
   /* Creates an undirected egde between the given cells. */
   void addEdge( MazeCell * cell_A, MazeCell * cell_B );
   /* Removes an undirected egde that is between the given cells. */
@@ -60,8 +59,6 @@ public:
   void clear();
   /* Clears the maze such that no walls will exist between two cells */
   void clearWalls();
-  /* draws the current state of the maze */
-  void draw();
   /* overloaded - delgates to at(row, column) */
   MazeCell * at( std::pair<int, int> & coordinate );
   /* Accessor method for maze internal nodal data structures. */
