@@ -123,7 +123,7 @@ void Maze::addWall( MazeCell * cell_A, MazeCell * cell_B ) {
 % File:         Maze.cpp
 % Parameters:   cell_A - a cell in this maze.
 %               cell_B - a cell in this maze.
-% Description:  Removes the wall betweeb two neighbor cells in maze. 
+% Description:  Removes the wall between two neighbor cells in maze. 
 % Return:       Nothing. 
 *******************************************************************************/
 void Maze::removeWall( MazeCell * cell_A, MazeCell * cell_B ) {
@@ -177,7 +177,7 @@ MazeCell * Maze::at( int row, int column ) {
 % Parameters:   cell_A - cell from maze of interest.
 %               cell_B - cell from maze of interest.
 % Description:  Evaluates if a wall exists between two nodes in the maze.
-% Return:       true if there exisits a wall between the cell-std::pair.
+% Return:       true if there exists a wall between the cell-std::pair.
 *******************************************************************************/
 bool Maze::wallBetween( MazeCell * cell_A, MazeCell * cell_B ) {
   if( cell_A == nullptr || cell_B == nullptr ) return false;
@@ -328,10 +328,12 @@ void Maze::decodeAndBuildCell( int row, int column, std::string binary_str ) {
   MazeCell * currentCell = at( row, column );
 
   if( binary_str[ right_index ] == '0' ) {
+    /* add right wall */
     addWall( at(row, column), at(row, column + 1) ); 
   }
 
   if( binary_str[ down_index ] == '0' ) {
+    /* add down wall */
     addWall( at(row, column), at(row + 1, column) );
   }
 }
@@ -346,7 +348,7 @@ void Maze::decodeAndBuildCell( int row, int column, std::string binary_str ) {
 void Maze::encodeToDisk( std::string filename ) {
   #ifndef ARDUINO
   std::ofstream out;
-  out.open (filename);
+  out.open( filename );
   out << encode();
   out.close();
   #endif
@@ -536,7 +538,6 @@ std::stack<std::string> MazeHelper::verticallyStackedRange( int min, int max ) {
   bool column_print_done = false;
   int base = 10;
   int exponent = 1;
-  //std::ostringstream ss;
   std::string str = "";
 
   while( !column_print_done ) {
