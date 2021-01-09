@@ -1,11 +1,9 @@
 /*******************************************************************************
                                                     Jose Jorge Jimenez-Olivas
-						    Brandon Cramer
-						    Chris Robles
-						    Srinivas Venkatraman
+						                                        Brandon Cramer
 
                  University of California, San Diego
-                      IEEE Micromouse Team 2019
+                           IEEE Micromouse
 
 File Name:       MazeCell.hpp
 Description:     Cell data structure of the maze and internal vertex for the 
@@ -80,11 +78,11 @@ public:
       /* cell is not adjacent */
       #if defined( ARDUINO )
         if( Serial ) {
-	  Serial.print( ADD_EDGE_ERROR );
-	  Serial.print( *this );
-	  Serial.print( " <-> " );
-	  Serial.print( *cell );
-	}
+	        Serial.print( ADD_EDGE_ERROR );
+	        Serial.print( *this );
+	        Serial.print( " <-> " );
+	        Serial.print( *cell );
+	      }
       #else
         std::cerr << ADD_EDGE_ERROR << *this << " <-> " << *cell;
       #endif
@@ -114,11 +112,11 @@ public:
       /* cell is not adjacent */
       #if defined( ARDUINO )
         if( Serial ) {
-	  Serial.print( REMOVE_EDGE_ERROR );
-	  Serial.print( *this );
-	  Serial.print( " <-> " );
-	  Serial.print( *cell );
-	}
+	        Serial.print( REMOVE_EDGE_ERROR );
+	        Serial.print( *this );
+	        Serial.print( " <-> " );
+	        Serial.print( *cell );
+	      }
       #else
         std::cerr << REMOVE_EDGE_ERROR << *this << " <-> " << *cell;
       #endif

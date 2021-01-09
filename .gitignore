@@ -2,3 +2,5 @@ Makefile
 main.cpp
 a.out
 .DS_Store
+datafile
+.vscode

@@ -1,11 +1,9 @@
 /*******************************************************************************
                                                     Jose Jorge Jimenez-Olivas
                                                     Brandon Cramer
-                                                    Chris Robles
-                                                    Srinivas Venkatraman
 
                  University of California, San Diego
-                      IEEE Micromouse Team 2019
+                           IEEE Micromouse
 
 File Name:       Maze.h
 Description:     2D matrix data structure with an internal graph abstraction. 
@@ -24,6 +22,8 @@ Description:     2D matrix data structure with an internal graph abstraction.
   #include <stack>
   #include <string>
   #include <cmath>
+  #include <cstring>
+  #include <climits>
   #include <utility>
   #include <iterator>
   #include <fstream>
@@ -36,19 +36,27 @@ class Maze {
 private:
   std::vector<std::vector<MazeCell>> maze;
   std::string maze_str;
-  std::string encoded_maze_str;
   /* Creates an undirected egde between the given cells. */
   void addEdge( MazeCell * cell_A, MazeCell * cell_B );
   /* Removes an undirected egde that is between the given cells. */
   void removeEdge( MazeCell * cell_A, MazeCell * cell_B );
-  /* build the cell's children */
-  void decodeAndBuildCell( int row, int column, std::string binary_str );
+  /* writes encoded maze to disk */
+  bool serialize( std::ofstream & outstream );
+  /* reads and decodes encoded maze from disk */
+  bool deserialize( std::ifstream & instream );
+  /* decodes cell from encoded codeword and builds builds cell neighbors */
+  void deserializeCell( MazeCell * cell, int codeword );
+  /* read stored maze width from file */
+  int deserializeWidth( const char * filename );
+  /* read stored maze height from file */
+  int deserializeHeight( const char * filename );
+
 public:  
   const int width, height;
   /* Creates a two dimensional maze data structure. */
   Maze( int width, int height );
   /* creates maze from encoded file */
-  Maze( std::string encodedfile );
+  Maze( const char * filename );
   /* Destructs the maze data structure */
   ~Maze();
   /* Creates a wall between two neighbor cells in maze. */
@@ -73,14 +81,16 @@ public:
   int getWidth();
   /* Getter method for the height, in unit cells, of the maze. */
   int getHeight();
-  /* string encoded representation of maze */
-  const char * encode();
-  /* decodes and builds the maze from decoded file */
-  void decodeAndBuildMaze( std::string encodedfile );
-  /* writes encoded maze to filename */
-  void encodeToDisk( std::string filename );
+  /* saves maze to file */
+  bool save( const char * filename );
+  /* loads maze from file */
+  bool load( const char * filename );
   /* c std::string representation of the maze */
   operator const char *();
+  /* Maze graph equivalance */
+  bool operator==( const Maze & other ) const;
+  /* Maze graph non-equivalence */
+  bool operator!=( const Maze & other ) const;
   /* implicit call to output the std::string representation of the maze */
   friend std::ostream & operator<<( std::ostream & os, Maze & maze );
   /* Iterator class for the maze container - allowing ranging for loops */

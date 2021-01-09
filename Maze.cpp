@@ -1,11 +1,9 @@
 /*******************************************************************************
                                                     Jose Jorge Jimenez-Olivas
                                                     Brandon Cramer
-                                                    Chris Robles
-                                                    Srinivas Venkatraman
 
                  University of California, San Diego
-                      IEEE Micromouse Team 2019
+                           IEEE Micromouse
 
 File Name:       Maze.cpp
 Description:     2D matrix data structure with an internal graph abstraction. 
@@ -39,6 +37,18 @@ Maze::Maze( int width, int height ) : width( width ), height( height ) {
       maze[ row ].push_back( MazeCell(row, column) );
     }
   }
+}
+
+/*******************************************************************************
+% Constructor: Maze
+% File:        Maze.cpp
+% Parameters:  filename - File location of a stored maze.
+% Description: Loads stored maze from disk to memory.
+*******************************************************************************/
+Maze::Maze( const char * filename ) : 
+  Maze( deserializeWidth(filename), deserializeHeight(filename) ) {
+    
+  load( filename );
 }
 
 /*******************************************************************************
@@ -94,12 +104,12 @@ void Maze::clearWalls() {
       MazeCell * currentCell = at(row, column);
 
       if( !outOfBounds(row + 1, column) ) {
-	/* vertical deviation downwards */
-	removeWall( currentCell, at(row + 1, column) );
+	      /* vertical deviation downwards */
+	      removeWall( currentCell, at(row + 1, column) );
       }
       if( !outOfBounds(row, column + 1) ) {
-	/* horizontal deviation to the right */
-	removeWall( currentCell, at(row, column + 1) );
+	      /* horizontal deviation to the right */
+	      removeWall( currentCell, at(row, column + 1) );
       }
     }
   }
@@ -255,100 +265,245 @@ int Maze::getHeight() {
 }
 
 /*******************************************************************************
-% Routine Name: encode 
+% Routine Name: save
 % File:         Maze.cpp
-% Parameters:   None.
-% Description:  Encoded string representation of maze.
-% Return:       Character array of encoded string.
+% Parameters:   filename - File to serialize maze data to. 
+% Description:  Saves maze to the disk.
+% Return:       Save status.
 *******************************************************************************/
-const char * Maze::encode() {
-  std::string encoded_str = "";
-  encoded_str += std::to_string(width) + "\n";
-  encoded_str += std::to_string(height) + "\n";
-  for( int row = 0; row < height; row++ ) {
-    for( int column = 0; column < width; column++ ) {
-      MazeCell * currentCell = at(row, column);
-      encoded_str += ( currentCell->up ) ? "1" : "0";
-      encoded_str += ( currentCell->right ) ? "1" : "0";
-      encoded_str += ( currentCell->down ) ? "1" : "0";
-      encoded_str += ( currentCell->left ) ? "1" : "0";
-      encoded_str += "\n";
-    }
-  }
-  encoded_maze_str = encoded_str;
-  return encoded_maze_str.c_str();
-}
-
-/*******************************************************************************
-% Routine Name: decodeAndBuildMaze 
-% File:         Maze.cpp
-% Parameters:   encodedfile - file with encoded maze.
-% Description:  Copies the encoded maze. 
-% Return:       Nothing. 
-*******************************************************************************/
-void Maze::decodeAndBuildMaze( std::string encodedfile ) {
+bool Maze::save( const char * filename ) {
   #ifndef ARDUINO
-  std::ifstream infile( encodedfile );
-
-  if( !infile.is_open() ) {
-    std::cerr << "Unable to open file: " << encodedfile << std::endl;
-    return;
+  std::ofstream outstream;
+  outstream.open( filename, std::ios::out | std::ios::binary );
+  std::cerr << "Saving Maze..." << std::endl;
+  if( !outstream.is_open() ) {
+    std::cerr << "Unable to open file: " << filename << std::endl;
+    return false;
   }
-
-  std::string line;
-  int read_width  = ( getline(infile, line) ) ? std::stoi(line) : -1;
-  int read_height = ( getline(infile, line) ) ? std::stoi(line) : -1;
-
-  if( read_width != width || read_height != height ) {
-    std::cerr << "Incompatible dimensions read from file: aborting maze build" << std::endl;
-    return;
-  }
-
-  clearWalls();
-  for( int row = 0; row < height; row++ ) {
-    for( int column = 0; column < width; column++ ) {
-      if( getline(infile, line) ) {
-        decodeAndBuildCell( row, column, line ); 
-      }
-      else {
-        std::cerr << "reading from curropted file" << std::endl;
-      }
-    }
-  }
-  infile.close();
+  bool status = serialize( outstream );
+  outstream.close();
+  return status;
   #endif
 }
 
-void Maze::decodeAndBuildCell( int row, int column, std::string binary_str ) {
-  const int up_index = 0;
-  const int right_index = 1;
-  const int down_index = 2;
-  const int left_index = 3;
+/*******************************************************************************
+% Routine Name: load
+% File:         Maze.cpp
+% Parameters:   filename - File to serialize maze data to. 
+% Description:  Loads maze from the disk.
+% Return:       Load status.
+*******************************************************************************/
+bool Maze::load( const char * filename ) {
+  #ifndef ARDUINO
+  std::ifstream instream;
+  instream.open( filename, std::ios::in | std::ios::binary );
+  std::cerr << "Loading Maze..." << std::endl;
+  if( !instream.is_open() ) {
+    std::cerr << "Unable to open file: " << filename << std::endl;
+    return false;
+  }
+  bool status = deserialize( instream );
+  instream.close();
+  return status;
+  #endif
+}
 
-  MazeCell * currentCell = at( row, column );
+/*******************************************************************************
+% Routine Name: serialize
+% File:         Maze.cpp
+% Parameters:   outstream - Output stream pointing to an open file to write to.
+% Description:  Encoding maze data to the disk.
+% Return:       Nothing.
+*******************************************************************************/
+bool Maze::serialize( std::ofstream & outstream ) {
+  #ifndef ARDUINO
+  int data = 0;
+  int bitcount = 0;
+  /* write dimensions of maze out to stream - order: width height */
+  int w = ntohl(width);
+  int h = ntohl(width);
+  outstream.write( (char *) &w, sizeof(width) );
+  outstream.write( (char *) &h, sizeof(height) );
 
-  if( binary_str[ right_index ] == '0' ) {
-    addWall( at(row, column), at(row, column + 1) ); 
+  /* write each cell info to data file */
+  for( int row = 0; row < getHeight(); row++ ) {
+    for( int column = 0; column < getWidth(); column++ ) {
+      MazeCell * currentCell = at( row, column );
+	    /* bitflag of open down neighbor */
+	    data = data << 1;
+	    if( currentCell->down != nullptr ) data |= 0x01;
+	    bitcount++;
+      /* bitflag of open right neighbor */
+	    data = data << 1;
+	    if( currentCell->right != nullptr ) data |= 0x01;
+	    bitcount++;
+	    /* time to write byte to stream */
+	    if( bitcount == CHAR_BIT ) {
+        outstream.write( (char *) &data, sizeof(char) );
+	      data = bitcount = 0;
+	    }
+    }
+  } 
+  /* flush data to data file */
+  if( bitcount != 0 ) {
+    data = data << (CHAR_BIT - bitcount); /* trailing zeros only */
+    outstream.write( (char *) &data, sizeof(char)); 
+  }
+  return true;
+  #endif
+}
+
+/*******************************************************************************
+% Routine Name: deserialize
+% File:         Maze.cpp
+% Parameters:   instream - Input stream pointing to a file to read from.
+% Description:  Decoding maze from the disk.
+% Return:       True for successful decode and maze build, false otherwise.
+*******************************************************************************/
+bool Maze::deserialize( std::ifstream & instream ) {
+  #ifndef ARDUINO
+  const int codeword_size = 2; /* bit size */
+  const int codeword_bitmask = ( 0x3 << (CHAR_BIT - codeword_size) );
+
+  /* read dimensions of maze from input stream - order: width height */
+  char buffer[BUFSIZ] = { 0 };
+  instream.read( buffer, 2 * sizeof(int) );
+  if( !instream ) {
+    /* corrupted datafile - missing bytes */
+    std::cerr << "Currupted file detected: Incompatible file size: Aborting maze build" << std::endl; 
+    return false;
+  }
+  /* strict order of: width, height */
+  int read_width, read_height;
+  std::memcpy( &read_width, buffer, sizeof(int) );
+  std::memcpy( &read_height, buffer + sizeof(int), sizeof(int) );
+  read_width = ntohl(read_width);
+  read_height = ntohl(read_height);
+  std::cerr << "Loading dimensions: (" << read_width << "," << read_height << ")" << std::endl;
+  if( read_width != getWidth() || read_height != getHeight() ) {
+    /* width or height is not the same dimension as this maze object */
+    std::cerr << "Incompatible dimensions read from file: Aborting maze build" << std::endl;
+    return false;
   }
 
-  if( binary_str[ down_index ] == '0' ) {
-    addWall( at(row, column), at(row + 1, column) );
+  /* read and build maze graph cell by cell */
+  int recieved = 0;
+  int row = 0;
+  int column = 0;
+  clearWalls(); /* creating walls are easier than removing walls */
+  instream.read(buffer, sizeof(char)); /* read byte */
+  memcpy(&recieved, buffer, sizeof(char));
+  while( instream ) {
+    /* reading 2-bit codewords. (1 codeword = 1 encoded maze node) */
+    for( int index = 0; index < CHAR_BIT / codeword_size; index++ ) {
+      if( row == getHeight() ) {
+        /* maze building is done - all cells visited */
+        int bytes_read = instream.tellg();
+        instream.seekg( 0, instream.end );
+        int bytes_available = ((int)instream.tellg()) - bytes_read;
+        if( bytes_available ) {
+          std::cerr << "Curropted file detected: Incompatible file size: Aborting maze build" << std::endl;
+          clear();
+          return false; 
+        }
+        return true;
+      }
+      /* build walls of cell */
+      MazeCell * currentCell = at( row, column );
+      int codeword = ((recieved & codeword_bitmask) >> (CHAR_BIT - codeword_size)); 
+      deserializeCell( currentCell, codeword );
+      recieved = recieved << codeword_size;
+      column++;
+      if( column == getWidth() ) {
+          column = 0;
+	        row++;
+	    }
+    }
+    instream.read(buffer, sizeof(char));
+    memcpy(&recieved, buffer, sizeof(char));
+  }
+
+  return true;
+  #endif
+}
+
+/*******************************************************************************
+% Routine Name: deserializeCell 
+% File:         Maze.cpp
+% Parameters:   cell     - Cell to be deserialized.
+%               codeword - Two-bit encoded cell. 
+% Description:  Builds encoded maze node from a two bit codeword. 
+% Return:       Nothing.
+*******************************************************************************/
+void Maze::deserializeCell( MazeCell * cell, int codeword ) {
+  const int down_bitmask = 0x01 << 1; 
+  const int right_bitmask = 0x01;
+  
+  if( (codeword & down_bitmask) == 0 && cell->row != getHeight() - 1 ) {
+    /* add down wall */
+    addWall( at(cell->row, cell->column), at(cell->row + 1, cell->column) );
+  }
+  if( (codeword & right_bitmask) == 0 && cell->column != getWidth() - 1 ) {
+    /* add right wall */
+    addWall( at(cell->row, cell->column), at(cell->row, cell->column + 1) );
   }
 }
 
 /*******************************************************************************
-% Routine Name: encodeToDisk
+% Routine Name: deserializeWidth
 % File:         Maze.cpp
-% Parameters:   None.
-% Description:  Encoded string representation of maze outputted to a file.
-% Return:       Nothing.
+% Parameters:   filename - file location maze is stored and encoded.
+% Description:  Reads the width of the maze from the file.
+% Return:       The width of the stored maze.
 *******************************************************************************/
-void Maze::encodeToDisk( std::string filename ) {
+int Maze::deserializeWidth( const char * filename ) {
   #ifndef ARDUINO
-  std::ofstream out;
-  out.open (filename);
-  out << encode();
-  out.close();
+  int read_width;
+  std::ifstream instream;
+  instream.open( filename, std::ios::in | std::ios::binary );
+  if( !instream.is_open() ) {
+    return 0;
+  }
+  /* encoded maze dimesion order: width, height */
+  instream.seekg( 0, instream.end );
+  int bytes_available = instream.tellg();
+  if( bytes_available < sizeof(int) ) {
+    /* corrupted datafile - missing bytes */
+    return 0;
+  }
+  instream.seekg( 0, instream.beg );
+  instream.read( (char *)&read_width, sizeof(int) );
+  instream.close();
+  return ntohl( read_width );
+  #endif
+}
+
+/*******************************************************************************
+% Routine Name: deserializeHeight
+% File:         Maze.cpp
+% Parameters:   filename - file location maze is stored and encoded.
+% Description:  Reads the height of the maze from the file.
+% Return:       The height of the stored maze.
+*******************************************************************************/
+int Maze::deserializeHeight( const char * filename ) {
+  #ifndef ARDUINO
+  int read_height;
+  std::ifstream instream;
+  instream.open( filename, std::ios::in | std::ios::binary );
+  if( !instream.is_open() ) {
+    return 0;
+  }
+  /* encoded maze dimesion order: width, height */
+  instream.seekg( 0, instream.end );
+  int bytes_available = instream.tellg();
+  if( bytes_available < 2 * sizeof(int) ) {
+    /* corrupted datafile - missing bytes */
+    return 0;
+  }
+  instream.seekg( sizeof(int), instream.beg );
+  instream.read( (char *)&read_height, sizeof(int) );
+  instream.close();
+  return ntohl( read_height );
   #endif
 }
 
@@ -418,8 +573,43 @@ Maze::operator const char *() {
     }
     maze_str += "\n";
   }
-
   return maze_str.c_str(); 
+}
+
+/*******************************************************************************
+% Routine Name: operator==
+% File:         Maze.cpp
+% Parameters:   other - Comparing maze.
+% Description:  Maze graph equivalence.
+% Return:       True if maze graphs are equivelent, false otherwise.
+*******************************************************************************/
+bool Maze::operator==( const Maze & other ) const {
+  if( height != other.height ) return false;
+  if( width != other.width ) return false;
+
+  for( int row = 0; row < height; row++ ) {
+    for( int column = 0; column < width; column++ ) {
+      /* compare all cells for graph-node equivalence */
+      const MazeCell * currentCell = &this->maze[ row ][ column ];
+      const MazeCell * otherCell = &other.maze[ row ][ column ];
+      if( !(currentCell->up) != !(otherCell->up) ) return false;
+      if( !(currentCell->right) != !(otherCell->right) ) return false;
+      if( !(currentCell->down) != !(otherCell->down) ) return false;
+      if( !(currentCell->left) != !(otherCell->left) ) return false;
+    }
+  }
+  return true;
+}
+
+/*******************************************************************************
+% Routine Name: operator!=
+% File:         Maze.cpp
+% Parameters:   other - Comparing maze.
+% Description:  Maze graph non-equivalence.
+% Return:       True if maze graphs are non-equivelent, false otherwise.
+*******************************************************************************/
+bool Maze::operator!=( const Maze & other ) const {
+  return !(*this==other);
 }
 
 /*******************************************************************************
@@ -529,14 +719,11 @@ bool Maze::Iterator::operator!=( Maze::Iterator const & other ) const {
 %               integers.
 *******************************************************************************/
 std::stack<std::string> MazeHelper::verticallyStackedRange( int min, int max ) {
-
   if( min > max ) return std::stack<std::string>();
-
   std::stack<std::string> stak;
   bool column_print_done = false;
   int base = 10;
   int exponent = 1;
-  //std::ostringstream ss;
   std::string str = "";
 
   while( !column_print_done ) {
