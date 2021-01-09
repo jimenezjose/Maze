@@ -133,7 +133,7 @@ void Maze::addWall( MazeCell * cell_A, MazeCell * cell_B ) {
 % File:         Maze.cpp
 % Parameters:   cell_A - a cell in this maze.
 %               cell_B - a cell in this maze.
-% Description:  Removes the wall betweeb two neighbor cells in maze. 
+% Description:  Removes the wall between two neighbor cells in maze. 
 % Return:       Nothing. 
 *******************************************************************************/
 void Maze::removeWall( MazeCell * cell_A, MazeCell * cell_B ) {
@@ -187,7 +187,7 @@ MazeCell * Maze::at( int row, int column ) {
 % Parameters:   cell_A - cell from maze of interest.
 %               cell_B - cell from maze of interest.
 % Description:  Evaluates if a wall exists between two nodes in the maze.
-% Return:       true if there exisits a wall between the cell-std::pair.
+% Return:       true if there exists a wall between the cell-std::pair.
 *******************************************************************************/
 bool Maze::wallBetween( MazeCell * cell_A, MazeCell * cell_B ) {
   if( cell_A == nullptr || cell_B == nullptr ) return false;

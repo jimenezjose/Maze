@@ -1,5 +1,5 @@
 # Maze
-Two-Dimensional Maze data structure.
+Two-Dimensional Maze data structure. API documentation comming soon. Also, I need to complete the maze decoder to be smaller. maybe instead of using a nibble use half a nibble of bytes. Or perhaps use huffman encoding.
 
 ## Arduino Installation:
 To learn how to include the Maze library to your Arduino project click [here](https://www.arduino.cc/en/guide/libraries#toc4). 
@@ -17,3 +17,5 @@ Download the repository to your project directory.
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/master/.images/Maze-Graph.png)
+
+# wiki page coming soon 2020
