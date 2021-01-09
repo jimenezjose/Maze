@@ -24,6 +24,8 @@ outOfBounds	KEYWORD2
 getAdjacentCellList	KEYWORD2
 getWidth	KEYWORD2
 getHeight	KEYWORD2
+save    KEYWORD2
+load	KEYWORD2
 
 # MazeCell scope
 clearData	KEYWORD2
