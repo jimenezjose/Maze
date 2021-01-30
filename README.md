@@ -1,5 +1,5 @@
 # Maze
-Two-Dimensional Maze data structure. API documentation comming soon.
+Two-Dimensional Maze data structure. API documentation comming soon. 2021
 
 ## Arduino Installation:
 To learn how to include the Maze library to your Arduino project click [here](https://www.arduino.cc/en/guide/libraries#toc4). 
