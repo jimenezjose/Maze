@@ -1,5 +1,8 @@
 # Maze
-Two-Dimensional Maze data structure. API documentation comming soon. 2021
+Two-Dimensional Maze data structure.
+
+## API
+[Maze Header File](https://github.com/jimenezjose/Maze/blob/master/Maze.h)
 
 ## Arduino Installation:
 To learn how to include the Maze library to your Arduino project click [here](https://www.arduino.cc/en/guide/libraries#toc4). 
@@ -17,6 +20,3 @@ Download the repository to your project directory.
 
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/media/.images/Maze-Graph.png)
-
-# API
-[Maze Header File](https://github.com/jimenezjose/Maze/blob/master/Maze.h)
