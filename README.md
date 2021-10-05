@@ -18,6 +18,5 @@ Download the repository to your project directory.
 ## Maze Visualization:
 ![Alt Text](https://github.com/jimenezjose/Maze/blob/media/.images/Maze-Graph.png)
 
-# wiki page coming soon 2021
-
-write a demo
+# API
+[Maze Header File](https://github.com/jimenezjose/Maze/blob/master/Maze.h)
