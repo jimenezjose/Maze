@@ -17,8 +17,8 @@ void setup() {
   for( MazeCell * openNeighbor : cell->getNeighborList() ) {
     /* visit cell neighbors and change their distance */
     if( openNeighbor->visited ) continue;
-	  openNeighbor->setVisited( true );
-	  openNeighbor->distance = cell->distance + 1;
+    openNeighbor->setVisited( true );
+    openNeighbor->distance = cell->distance + 1;
   }
 
 }
